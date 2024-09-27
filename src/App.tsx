@@ -1,7 +1,8 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/tauri";
-import "./App.css";
+import { Button, Text, TextInput, Title } from "@mantine/core";
+
+import classes from "./App.module.css";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -12,42 +13,18 @@ function App() {
     setGreetMsg(await invoke("greet", { name }));
   }
 
-  return (
-    <div className="container">
-      <h1>Welcome to Tauri!</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
+  return(
+    <div className={classes.appMain}>
+      <Title className={classes.title} ta="center">Eager Ermine</Title>
+      <form className={classes.inputs}
+        onSubmit={(e) => {e.preventDefault(); greet(); }}
       >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
+        <TextInput onChange={(e) => setName(e.currentTarget.value)} id="greet-input" placeholder="Enter your name"/>
+        <Button type="submit" >Say hi!</Button>
       </form>
-
-      <p>{greetMsg}</p>
+      <Text ta='center'>{greetMsg}</Text>
     </div>
-  );
+  )
 }
 
 export default App;

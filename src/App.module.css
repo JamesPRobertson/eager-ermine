@@ -1,0 +1,38 @@
+.appbar {
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  color: #FFF;
+}
+
+.appMain {
+  background-color: rgb(40, 40, 40);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 64px
+}
+
+.inputs {
+  display: flex;
+  flex-direction: row;
+  column-gap: 12px;
+  padding: 24px;
+  justify-content: center;
+}
+
+.title {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-size: rem(100px);
+  font-weight: 900;
+  letter-spacing: rem(-2px);
+
+  @media (max-width: $mantine-breakpoint-md) {
+    font-size: rem(50px);
+  }
+}
