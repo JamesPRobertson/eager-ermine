@@ -1,8 +1,6 @@
-import { Anchor, Button, TextInput, Title } from "@mantine/core";
+import { Button, TextInput, Title } from "@mantine/core";
 
 import classes from "./LandingPage.module.css";
-
-import { Link } from "react-router-dom";
 
 export const LandingPage = () => {
   return (
@@ -13,7 +11,6 @@ export const LandingPage = () => {
       >
         <TextInput onChange={(e) => console.log("woo")} id="greet-input" placeholder="Enter your name"/>
         <Button type="submit" >Say hi!</Button>
-        <Anchor component={Link} variant="link" to="/items" >Clicky</Anchor>
       </form>
     </>
   )
