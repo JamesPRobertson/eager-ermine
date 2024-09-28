@@ -1,35 +1,34 @@
-import { useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
-import { AppShell, Button, Text, TextInput, Title } from "@mantine/core";
+import { AppShell, Burger, Button, Group, Text } from "@mantine/core";
 
 import classes from "./App.module.css";
+import { useDisclosure } from "@mantine/hooks";
+import { Router } from "./Router";
 
 function App() {
-  const [greeting, setGreeting] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreeting(await invoke("greet", { name }));
-  }
+  const [isNavOpen, {toggle: toggleNavOpen}] = useDisclosure(true);
 
   return(
     <div className={classes.appMain}>
       <AppShell
-        header={{height: 50}}
+        header={{height: 40}}
+        navbar={{width: 200, breakpoint: "sm", collapsed: { desktop: isNavOpen}}}
+        classNames={{navbar: classes.navbar}}
+        padding="md"
       >
         <AppShell.Header>
-          <Text>Appbar!</Text>
+          <Group px="md" h="100%">
+            <Burger opened={!isNavOpen} onClick={toggleNavOpen} />
+            <Text>Eager Ermine</Text>
+          </Group>
         </AppShell.Header>
+        <AppShell.Navbar>
+          <Button component="a" href="/">Landing Page</Button>
+          <Button component="a" href="/items">Items</Button>
+          <Button component="a">Buildings</Button>
+          <Button component="a">Recipes</Button>
+          <Button component="a">Planner</Button>
+        </AppShell.Navbar>
         <AppShell.Main>
-          <Title className={classes.title} ta="center">Eager Ermine</Title>
-          <form className={classes.inputs}
-            onSubmit={(e) => {e.preventDefault(); greet(); }}
-          >
-            <TextInput onChange={(e) => setName(e.currentTarget.value)} id="greet-input" placeholder="Enter your name"/>
-            <Button type="submit" >Say hi!</Button>
-          </form>
-          <Text ta='center'>{greeting}</Text>
         </AppShell.Main>
       </AppShell>
     </div>
