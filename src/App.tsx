@@ -1,30 +1,37 @@
-import { useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
-import { Button, Text, TextInput, Title } from "@mantine/core";
+import { AppShell, Burger, Button, Group, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { Link, Outlet } from "react-router-dom";
 
 import classes from "./App.module.css";
 
-function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
+export const App = () => {
+  const [isNavOpen, {toggle: toggleNavOpen}] = useDisclosure(true);
 
   return(
     <div className={classes.appMain}>
-      <Title className={classes.title} ta="center">Eager Ermine</Title>
-      <form className={classes.inputs}
-        onSubmit={(e) => {e.preventDefault(); greet(); }}
+      <AppShell
+        header={{height: 40}}
+        navbar={{width: 200, breakpoint: "sm", collapsed: { desktop: isNavOpen}}}
+        classNames={{navbar: classes.navbar}}
+        padding="md"
       >
-        <TextInput onChange={(e) => setName(e.currentTarget.value)} id="greet-input" placeholder="Enter your name"/>
-        <Button type="submit" >Say hi!</Button>
-      </form>
-      <Text ta='center'>{greetMsg}</Text>
+        <AppShell.Header>
+          <Group px="md" h="100%">
+            <Burger opened={!isNavOpen} onClick={toggleNavOpen} />
+            <Text>Eager Ermine</Text>
+          </Group>
+        </AppShell.Header>
+        <AppShell.Navbar>
+          <Button component={Link} to="/home">Landing Page</Button>
+          <Button component={Link} to="/items">Items</Button>
+          <Button component={Link} to="/buildings" disabled={true} >Buildings</Button>
+          <Button component={Link} to="/recipes" disabled={true} >Recipes</Button>
+          <Button component={Link} to="/planner" disabled={true} >Planner</Button>
+        </AppShell.Navbar>
+        <AppShell.Main>
+          <Outlet />
+        </AppShell.Main>
+      </AppShell>
     </div>
   )
 }
-
-export default App;
