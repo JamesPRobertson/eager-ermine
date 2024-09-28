@@ -1,13 +1,10 @@
 import { AppShell, Burger, Button, Group, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { Link, Outlet } from "react-router-dom";
 
 import classes from "./App.module.css";
-import { useDisclosure } from "@mantine/hooks";
 
-import { Link, Outlet, Routes, Route } from "react-router-dom";
-import { ItemsPage } from "./pages/Items/ItemsPage";
-import { LandingPage } from "./pages/LandingPage/LandingPage";
-
-const AppLayout = () => {
+export const App = () => {
   const [isNavOpen, {toggle: toggleNavOpen}] = useDisclosure(true);
 
   return(
@@ -27,8 +24,8 @@ const AppLayout = () => {
         <AppShell.Navbar>
           <Button component={Link} to="/home">Landing Page</Button>
           <Button component={Link} to="/items">Items</Button>
-          <Button component={Link} to="/buildings">Buildings</Button>
-          <Button component={Link} to="/recipes">Recipes</Button>
+          <Button component={Link} to="/buildings" disabled={true} >Buildings</Button>
+          <Button component={Link} to="/recipes" disabled={true} >Recipes</Button>
           <Button component={Link} to="/planner" disabled={true} >Planner</Button>
         </AppShell.Navbar>
         <AppShell.Main>
@@ -38,17 +35,3 @@ const AppLayout = () => {
     </div>
   )
 }
-
-const App = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<AppLayout />}>
-        <Route path="home" element={<LandingPage />}/>
-        <Route path="items" element={<ItemsPage />}/>
-      </Route>
-      <Route path="*" element={<AppLayout />} />
-    </Routes>
-  )
-}
-
-export default App;
