@@ -13,7 +13,6 @@ export const App = () => {
         header={{height: 40}}
         navbar={{width: 200, breakpoint: "sm", collapsed: { desktop: isNavOpen}}}
         classNames={{navbar: classes.navbar}}
-        padding="md"
       >
         <AppShell.Header>
           <Group px="md" h="100%">
