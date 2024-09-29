@@ -1,3 +1,5 @@
+import { invoke } from "@tauri-apps/api/tauri";
+
 class Database {
   items: {
     [index: number ]: Item
@@ -23,6 +25,13 @@ class Database {
     else {
       console.log(`ID ${entry.id} Already exists`);
     }
+  }
+
+  buildDB(): string {
+    let output: any = invoke('read_file').then((out) => {return out});
+    console.log(output);
+
+    return output as string;
   }
 }
 

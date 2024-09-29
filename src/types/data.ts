@@ -8,14 +8,24 @@ interface Item extends Object {
 
 type Building = {
   id: number,
-  name: string
+  name: string,
+  powerConsumption: number
 }
 
+type Input = {
+  id: number,
+  quantity: number
+}
+
+type Output = {
+  id: number,
+  quantity: number
+}
 
 type Recipe = {
   id: number,
-  inputs: number[],
-  outputs: number[],
+  inputs: Input[],
+  outputs: Output[],
   building: number,
-  speed?: number
+  baseSpeed?: number
 }
