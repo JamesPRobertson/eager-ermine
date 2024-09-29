@@ -4,6 +4,8 @@ import { Button, Text, TextInput, Title } from "@mantine/core";
 import classes from "./LandingPage.module.css";
 import { useState } from 'react';
 
+import { database } from '../../lib/database';
+
 export const LandingPage = () => {
   const [filePath, setFilePath] = useState<string>();
   const [output, setOutput] = useState<string>();
@@ -31,6 +33,15 @@ export const LandingPage = () => {
           placeholder="Enter your name" />
         <Button type="submit" >Get File</Button>
       </form>
+      <Button
+        variant='outline'
+        color='red'
+        onClick={ () => {
+          database.commitItems()
+        } }
+      >
+        Write Items
+      </Button>
       <Text>{output}</Text>
     </>
   )

@@ -1,59 +1,71 @@
-import { Button, Container, Text } from "@mantine/core"
+import { Button, Flex, Group, Text, TextInput, Title } from "@mantine/core"
 
 import { database } from "../../../../lib/database"
+import { useForm } from "@mantine/form"
 
-function getRandomName(): string {
-  let materials: string[] = [
-    "Iron",
-    "Steel",
-    "Aluminum",
-    "Meaty",
-    "Air",
-    "Glass",
-    "Extreme",
-    "Nuclear",
-    "Uranium",
-    "Dusty",
-    "Porky",
-    "Big"
-  ];
+export const EditControls = ({selected}: {selected?: Item}) => {
+  const form = useForm({
+    mode:"uncontrolled",
+    initialValues: {
+      name: ""
+    },
+    validate: {
+      name: (value) => (value === "" ? "Name cannot be empty" : null)
+    }
+  })
 
-  let device: string[] = [
-    "rod",
-    "sheet",
-    "ingot",
-    "sphere",
-    "claw",
-    "sword",
-    "ball",
-    "shell",
-    "cannon",
-    "hammer",
-    "globe",
-    "gun"
-  ]
-  let firstIndex = Math.floor((Math.random() * 100) % materials.length);
-  let secondIndex = Math.floor((Math.random() * 100) % device.length);
-  return `${materials[firstIndex]} ${device[secondIndex]}`;
-}
-
-export const EditControls = ({selected}: {selected?: string}) => {
   return (
-    <Container>
-      <Text>
-        You have { selected ? selected : "nothing"} selected.
-      </Text>
-      <Button
-        onClick={ () => {
-          for (let i = 0; i < 256; i++) {
-            database.addItem({
-              id: i,
-              name: getRandomName()
+    <Flex
+      mt="lg"
+      direction="column"
+      gap="lg"
+      align="center"
+      flex={1}
+    >
+      <Title>
+        {selected ? selected.name : "Select an item on the left"}
+      </Title>
+      {
+        selected && 
+        <Flex
+          component="form"
+          onSubmit={
+            form.onSubmit((values) => {
+              database.updateItem({id: selected.id, name: values.name, tags: selected.tags});
             })
           }
-          console.log(database.items);
-        }
-      }>Add Items</Button>
-    </Container>
+          direction="column"
+          gap="md"
+          h="100%"
+        >
+          <TextInput
+            label="Name"
+            placeholder={selected.name}
+            key={form.key("name")}
+            {...form.getInputProps('name')}
+          />
+          <Group
+            justify="space-between"
+          >
+            <Button
+              variant="outline"
+              color="rgba(255, 0, 0, 1)"
+            >
+              Delete
+            </Button>
+            <Button
+              color="gray"
+            >
+              Discard
+            </Button>
+            <Button
+              type="submit"
+            >
+              Save
+            </Button>
+          </Group>
+        </Flex>
+      }
+    </Flex>
   )
 }
