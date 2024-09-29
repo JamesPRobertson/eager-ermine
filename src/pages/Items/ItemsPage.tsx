@@ -1,11 +1,11 @@
 import { Button, Flex } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks";
-import { ItemSelect } from "./components/ItemSelect/ItemSelect";
-import { EditControls } from "./components/EditControls/EditControls";
+import { ItemSelect } from "components/ItemSelect/ItemSelect";
+import { EditControls } from "./components/ItemEditControls/ItemEditControls";
 
 import { useEffect, useState } from "react";
 
-import { database } from "../../lib/database";
+import { database } from "lib/database";
 
 import classes from "./ItemsPage.module.css";
 

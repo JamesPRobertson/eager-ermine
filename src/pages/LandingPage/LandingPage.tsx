@@ -4,7 +4,7 @@ import { Button, Text, TextInput, Title } from "@mantine/core";
 import classes from "./LandingPage.module.css";
 import { useState } from 'react';
 
-import { database } from '../../lib/database';
+import { database } from 'lib/database';
 
 export const LandingPage = () => {
   const [filePath, setFilePath] = useState<string>();
