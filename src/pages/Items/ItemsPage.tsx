@@ -28,13 +28,13 @@ const ItemEntry = ({entry, setter}: any) => {
 export const ItemsPage = () => {
   const { height, width } = useViewportSize();
   const [ selectedItem, setSelectedItem ] = useState<Item>();
-  const [itemsListData, setItemsListData] = useState<any[]>();
+  const [ itemsListData, setItemsListData ] = useState<any[]>();
 
   useEffect(() => {
     setItemsListData(Object.entries(database.items).map(
       (entry: any, index: any) => <ItemEntry key={index} entry={entry} setter={setSelectedItem}/>
     ))
-  }, []);
+  }, [itemsListData]);
 
   return (
     <Flex

@@ -32,6 +32,7 @@ export const EditControls = ({selected}: {selected?: Item}) => {
           onSubmit={
             form.onSubmit((values) => {
               database.updateItem({id: selected.id, name: values.name, tags: selected.tags});
+              database.commitItems();
             })
           }
           direction="column"
