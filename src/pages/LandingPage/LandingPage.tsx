@@ -1,17 +1,48 @@
-import { Button, TextInput, Title } from "@mantine/core";
+import { invoke } from '@tauri-apps/api';
+import { Button, Text, TextInput, Title } from "@mantine/core";
 
 import classes from "./LandingPage.module.css";
+import { useState } from 'react';
+
+import { database } from '../../lib/database';
 
 export const LandingPage = () => {
+  const [filePath, setFilePath] = useState<string>();
+  const [output, setOutput] = useState<string>();
   return (
     <>
       <Title className={classes.title} ta="center">Eager Ermine</Title>
       <form className={classes.inputs}
-        onSubmit={(e) => {e.preventDefault(); console.log(e); }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log(e); 
+
+          let output: any = invoke(
+            'read_file',
+            { path: filePath}
+            ).then((message) => {setOutput(message as string)});
+          console.log(output);
+        }}
       >
-        <TextInput onChange={(e) => console.log("woo")} id="greet-input" placeholder="Enter your name"/>
-        <Button type="submit" >Say hi!</Button>
+        <TextInput
+          onChange={(e) => {
+            setOutput("");
+            setFilePath(e.currentTarget.value);
+          }}
+          id="greet-input"
+          placeholder="Enter your name" />
+        <Button type="submit" >Get File</Button>
       </form>
+      <Button
+        variant='outline'
+        color='red'
+        onClick={ () => {
+          database.commitItems()
+        } }
+      >
+        Write Items
+      </Button>
+      <Text>{output}</Text>
     </>
   )
 }
