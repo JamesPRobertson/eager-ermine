@@ -23,7 +23,7 @@ export const BuildingEditControls = ({selected}: {selected?: Building}) => {
       flex={1}
     >
       <Title>
-        {selected ? selected.name : "Select an item on the left"}
+        {selected ? selected.name : "Select a building on the left"}
       </Title>
       {
         selected && 
@@ -31,8 +31,10 @@ export const BuildingEditControls = ({selected}: {selected?: Building}) => {
           component="form"
           onSubmit={() => {
             form.onSubmit((values) => {
-              database.updateItem({id: selected.id, name: values.name, tags: selected.tags});
+              /* TODO: write for buildings
+              database.updateItem({id: selected.id, name: values.name});
               database.commitItems();
+              */
             })
           }
           }
