@@ -1,6 +1,6 @@
 import { Button, ScrollArea, Stack } from "@mantine/core"
 
-export const ItemEntry = ({entry, setter}: any) => {
+export const ItemEntry = ({entry, setter, displayName}: any) => {
   return (
     <Button
       variant="subtle"
@@ -11,7 +11,7 @@ export const ItemEntry = ({entry, setter}: any) => {
         setter(entry[1])
       }}
     >
-      {entry[1].name}
+      { displayName ?? entry[1].name}
     </Button>
   )
 }

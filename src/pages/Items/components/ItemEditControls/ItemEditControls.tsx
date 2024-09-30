@@ -16,7 +16,7 @@ export const EditControls = ({selected}: {selected?: Item}) => {
 
   return (
     <Flex
-      mt="lg"
+      p="lg"
       direction="column"
       gap="lg"
       align="center"

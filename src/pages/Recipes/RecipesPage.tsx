@@ -5,15 +5,23 @@ import { ItemEntry, ItemSelect  } from "components/ItemSelect/ItemSelect";
 import { useEffect, useState } from "react";
 
 import { database } from "lib/database";
+import { RecipeEditControls } from "./components/RecipeEditControls/RecipeEditControls";
 
 export const RecipesPage = () => {
   const { height, width } = useViewportSize();
-  const [ selectedItem, setSelectedItem ] = useState<Item>();
+  const [ selection, setSelection ] = useState<Recipe>();
   const [ itemsListData, setItemsListData ] = useState<any[]>();
 
   useEffect(() => {
-    setItemsListData(Object.entries(database.items).map(
-      (entry: any, index: any) => <ItemEntry key={index} entry={entry} setter={setSelectedItem}/>
+    setItemsListData(Object.entries(database.recipes).map(
+      (entry: any, index: any) => (
+        <ItemEntry
+          key={index}
+          entry={entry}
+          displayName={database.items[entry[1].outputs[0].id].name}
+          setter={setSelection}
+        />
+      )
     ))
   }, [itemsListData]);
 
@@ -24,6 +32,7 @@ export const RecipesPage = () => {
     >
       <ItemSelect height={height} data={itemsListData} />
       <div style={{alignSelf: "stretch", width: 1, backgroundColor: "#444"}}/>
+      <RecipeEditControls selectedRecipe={selection} />
     </Flex>
   )
 }

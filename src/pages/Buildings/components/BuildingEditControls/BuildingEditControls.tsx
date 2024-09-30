@@ -3,7 +3,7 @@ import { Button, Flex, Group, TextInput, Title } from "@mantine/core"
 import { database } from "lib/database"
 import { useForm } from "@mantine/form"
 
-export const EditControls = ({selected}: {selected?: Item}) => {
+export const BuildingEditControls = ({selected}: {selected?: Building}) => {
   const form = useForm({
     mode:"uncontrolled",
     initialValues: {
@@ -16,7 +16,7 @@ export const EditControls = ({selected}: {selected?: Item}) => {
 
   return (
     <Flex
-      mt="lg"
+      p="lg"
       direction="column"
       gap="lg"
       align="center"

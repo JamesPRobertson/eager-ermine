@@ -1,9 +1,13 @@
 // TODO: these should be documented a bit more :)
 
+type ItemTag = {
+  name: string
+}
+
 interface Item extends Object {
   id: number,
   name: string,
-  tags?: any[]
+  tags?: ItemTag[]
 }
 
 type Building = {
