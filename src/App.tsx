@@ -17,7 +17,7 @@ export const App = () => {
         <AppShell.Header>
           <Group px="md" h="100%">
             <Burger opened={!isNavOpen} onClick={toggleNavOpen} />
-            <Text>Eager Ermine</Text>
+            <Text>EE Factory Planner</Text>
           </Group>
         </AppShell.Header>
         <AppShell.Navbar>
