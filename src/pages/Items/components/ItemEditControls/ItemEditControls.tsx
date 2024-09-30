@@ -1,6 +1,6 @@
-import { Button, Flex, Group, Text, TextInput, Title } from "@mantine/core"
+import { Button, Flex, Group, TextInput, Title } from "@mantine/core"
 
-import { database } from "../../../../lib/database"
+import { database } from "lib/database"
 import { useForm } from "@mantine/form"
 
 export const EditControls = ({selected}: {selected?: Item}) => {
@@ -16,7 +16,7 @@ export const EditControls = ({selected}: {selected?: Item}) => {
 
   return (
     <Flex
-      mt="lg"
+      p="lg"
       direction="column"
       gap="lg"
       align="center"
@@ -29,11 +29,12 @@ export const EditControls = ({selected}: {selected?: Item}) => {
         selected && 
         <Flex
           component="form"
-          onSubmit={
+          onSubmit={() => {
             form.onSubmit((values) => {
               database.updateItem({id: selected.id, name: values.name, tags: selected.tags});
               database.commitItems();
             })
+          }
           }
           direction="column"
           gap="md"

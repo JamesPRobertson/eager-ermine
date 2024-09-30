@@ -4,8 +4,11 @@ import { MantineProvider } from "@mantine/core";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { App } from "./App";
-import { ItemsPage } from "./pages/Items/ItemsPage";
+
 import { LandingPage } from "./pages/LandingPage/LandingPage";
+import { ItemsPage } from "./pages/Items/ItemsPage";
+import { BuildingsPage } from "pages/Buildings/BuildingsPage";
+import { RecipesPage } from "pages/Recipes/RecipesPage";
 
 import '@mantine/core/styles.css';
 
@@ -17,6 +20,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Route path="/" element={<App/>}>
             <Route path="home" element={<LandingPage />}/>
             <Route path="items" element={<ItemsPage />}/>
+            <Route path="buildings" element={<BuildingsPage />}/>
+            <Route path="recipes" element={<RecipesPage />}/>
           </Route>
           <Route path="*" element={<App/>} />
         </Routes>

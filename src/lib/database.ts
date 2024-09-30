@@ -18,6 +18,8 @@ class Database {
     this.recipes = {};
     this.buildings = {};
     this.buildItems();
+    this.buildRecipes();
+    this.buildBuildings();
   }
 
   addItem(newEntry: Item): void {
@@ -49,7 +51,6 @@ class Database {
     invoke('read_file', {path: "/Users/james/Projects/tauri/eager-ermine/dist/items.json"})
       .then((content: any) => {
         this.items = JSON.parse(content).items;
-        console.log(JSON.stringify(this.items, null, 2));
       });
   }
 
@@ -70,14 +71,16 @@ class Database {
   buildRecipes(): void {
     invoke('read_file', {path: "/Users/james/Projects/tauri/eager-ermine/dist/recipes.json"})
       .then((content: any) => {
-        console.log(JSON.parse(content));
+        this.recipes = JSON.parse(content).recipes;
+        console.log(this.recipes);
       });
   }
 
   buildBuildings(): void {
     invoke('read_file', {path: "/Users/james/Projects/tauri/eager-ermine/dist/buildings.json"})
       .then((content: any) => {
-        console.log(JSON.parse(content));
+        this.buildings = JSON.parse(content).buildings;
+        console.log(this.buildings);
       });
   }
 }
