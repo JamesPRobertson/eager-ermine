@@ -1,13 +1,12 @@
-import { Button, Flex } from "@mantine/core"
+import { Flex } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks";
-import { ItemEntry, ItemSelect } from "components/ItemSelect/ItemSelect";
-import { EditControls } from "./components/ItemEditControls/ItemEditControls";
+import { ItemEntry, ItemSelect  } from "components/ItemSelect/ItemSelect";
 
 import { useEffect, useState } from "react";
 
 import { database } from "lib/database";
 
-export const ItemsPage = () => {
+export const RecipesPage = () => {
   const { height, width } = useViewportSize();
   const [ selectedItem, setSelectedItem ] = useState<Item>();
   const [ itemsListData, setItemsListData ] = useState<any[]>();
@@ -25,7 +24,6 @@ export const ItemsPage = () => {
     >
       <ItemSelect height={height} data={itemsListData} />
       <div style={{alignSelf: "stretch", width: 1, backgroundColor: "#444"}}/>
-      <EditControls selected={selectedItem} />
     </Flex>
   )
 }

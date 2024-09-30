@@ -23,8 +23,8 @@ export const App = () => {
         <AppShell.Navbar>
           <Button component={Link} to="/home">Landing Page</Button>
           <Button component={Link} to="/items">Items</Button>
-          <Button component={Link} to="/buildings" disabled={true} >Buildings</Button>
-          <Button component={Link} to="/recipes" disabled={true} >Recipes</Button>
+          <Button component={Link} to="/buildings">Buildings</Button>
+          <Button component={Link} to="/recipes">Recipes</Button>
           <Button component={Link} to="/planner" disabled={true} >Planner</Button>
         </AppShell.Navbar>
         <AppShell.Main>
