@@ -32,7 +32,7 @@ export const RecipesPage = () => {
     >
       <ItemSelect height={height} data={itemsListData} />
       <div style={{alignSelf: "stretch", width: 1, backgroundColor: "#444"}}/>
-      <RecipeEditControls selectedRecipe={selection} />
+      <RecipeEditControls height={height} selectedRecipe={selection} />
     </Flex>
   )
 }

@@ -28,7 +28,7 @@ const ItemSelectPair = ({data}: {data?: string[]}) => {
 }
 
 
-export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) => {
+export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
   const [ availableItems, setAvailableItems ] = useState<string[]>();
   const [ availableBuildings, setAvailableBuildings ] = useState<string[]>();
 
@@ -49,6 +49,8 @@ export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) 
       gap="lg"
       align="center"
       flex={1}
+      h={height - 40}
+      style={{backgroundColor: "rgba(16, 16, 16, 0.50)"}}
     >
       <Title>
         { selectedRecipe ? database.items[selectedRecipe.outputs[0].id].name : "Select a recipe from the left"}
@@ -83,7 +85,7 @@ export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) 
           <ItemSelectPair data={availableItems} />
 
           <Grid.Col span={12}>
-            <Divider orientation="horizontal" mx="lg" />
+            <Divider orientation="horizontal" mx="lg" my="sm" />
           </Grid.Col>
 
           <Grid.Col span={4}>

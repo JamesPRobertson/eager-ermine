@@ -19,7 +19,8 @@ export const ItemEntry = ({entry, setter, displayName}: any) => {
 export const ItemSelect = ({height, data}: {height: number, data: any}) => {
   return (
     <ScrollArea.Autosize
-      mah={height - 40}
+      h={height - 40}
+      style={{backgroundColor: "rgba(24, 24, 24, 0.50)"}}
     >
       <Stack
         gap={1}

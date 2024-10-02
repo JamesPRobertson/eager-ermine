@@ -28,6 +28,7 @@ type Output = {
 
 type Recipe = {
   id: number,
+  name: string,
   inputs: Input[],
   outputs: Output[],
   building: number,
