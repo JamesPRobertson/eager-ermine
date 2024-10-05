@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, Title } from "@mantine/core";
+import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInput, Title } from "@mantine/core";
 
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
@@ -115,6 +115,10 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
     }
   });
 
+  const handleSubmit = (values: RecipeFormValues) => {
+    console.log(values);
+  }
+
   useEffect(() => {
     setAvailableItems(Object.entries(database.items).map(
       (entry: any, index: any) => ( `${entry[1].name}`)
@@ -124,6 +128,12 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
       (entry: any, index: any) => ( `${entry[1].name}`)
     ));
   }, []);
+
+  useEffect(() => {
+    form.setValues({
+      name: selectedRecipe && selectedRecipe.name
+    });
+  }, [selectedRecipe])
 
   return (
     <Flex
@@ -135,16 +145,25 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
       h={height - 40}
       style={{backgroundColor: "rgba(16, 16, 16, 0.66)"}}
     >
-      <Title>
-        { selectedRecipe ?
-          database.items[selectedRecipe.outputs[0].id].name :
-          "Select a recipe from the left" }
-      </Title>
+      <TextInput
+        variant="unstyled"
+        placeholder="Recipe Name"
+        size="xl"
+        fw={700}
+        ta="center"
+        bg="rgba(255, 255, 255, 0.075)"
+        p={8}
+        style={{borderRadius: 4}}
+        miw={500}
+        key={form.key('name')}
+        {...form.getInputProps('name')}
+      />
       {
         selectedRecipe && 
         <Grid
           grow
           component="form"
+          onSubmit={form.onSubmit(handleSubmit)}
         >
           <Grid.Col span={5} >
             <Text ta="center" fw={650} size="xl">Input</Text>
@@ -209,6 +228,7 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
               </Button>
               <Button
                 color="rgba(0, 128, 0, 1)"
+                type="submit"
               >
                 Save
               </Button>
