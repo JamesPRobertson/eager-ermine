@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, Title } from "@mantine/core";
 
 import { database } from "lib/database";
+import { useForm } from "@mantine/form";
 
-const ItemSelectPair = ({data}: {data?: string[]}) => {
+const ItemSelectRow = ({data, form, rowNumber}: {data?: string[], form: any, rowNumber: number}) => {
   return (
     <>
       <Grid.Col span={4}>
@@ -12,6 +13,8 @@ const ItemSelectPair = ({data}: {data?: string[]}) => {
           clearable
           searchable
           data={data}
+          key={form.key(`input${rowNumber}Name`)}
+          {...form.getInputProps(`input${rowNumber}Name`)}
         />
       </Grid.Col>
       <Grid.Col span={1}>
@@ -21,6 +24,32 @@ const ItemSelectPair = ({data}: {data?: string[]}) => {
           allowNegative={false}
           max={999}
           hideControls
+          placeholder="-"
+          key={form.key(`input${rowNumber}Quantity`)}
+          {...form.getInputProps(`input${rowNumber}Quantity`)}
+        />           
+      </Grid.Col>
+      <Grid.Col span={2} />
+      <Grid.Col span={4}>
+        <Select 
+          placeholder="None"
+          clearable
+          searchable
+          data={data}
+          key={form.key(`output${rowNumber}Name`)}
+          {...form.getInputProps(`output${rowNumber}Name`)}
+        />
+      </Grid.Col>
+      <Grid.Col span={1}>
+        <NumberInput
+          allowDecimal={false}
+          allowLeadingZeros={false}
+          allowNegative={false}
+          max={999}
+          hideControls
+          placeholder="-"
+          key={form.key(`output${rowNumber}Quantity`)}
+          {...form.getInputProps(`output${rowNumber}Quantity`)}
         />           
       </Grid.Col>
     </>
@@ -31,6 +60,39 @@ const ItemSelectPair = ({data}: {data?: string[]}) => {
 export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
   const [ availableItems, setAvailableItems ] = useState<string[]>();
   const [ availableBuildings, setAvailableBuildings ] = useState<string[]>();
+
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      name: '',
+      input0Name: '',
+      input0Quantity: undefined,
+
+      input1Name: '',
+      input1Quantity: undefined,
+
+      input2Name: '',
+      input2Quantity: undefined,
+
+      input3Name: '',
+      input3Quantity: undefined,
+
+      output0Name: '',
+      output0Quantity: undefined,
+
+      output1Name: '',
+      output1Quantity: undefined,
+
+      output2Name: '',
+      output2Quantity: undefined,
+
+      output3Name: '',
+      output3Quantity: undefined,
+
+      building: '',
+      rate: undefined
+    }
+  });
 
   useEffect(() => {
     setAvailableItems(Object.entries(database.items).map(
@@ -50,15 +112,18 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
       align="center"
       flex={1}
       h={height - 40}
-      style={{backgroundColor: "rgba(16, 16, 16, 0.50)"}}
+      style={{backgroundColor: "rgba(16, 16, 16, 0.66)"}}
     >
       <Title>
-        { selectedRecipe ? database.items[selectedRecipe.outputs[0].id].name : "Select a recipe from the left"}
+        { selectedRecipe ?
+          database.items[selectedRecipe.outputs[0].id].name :
+          "Select a recipe from the left" }
       </Title>
       {
         selectedRecipe && 
         <Grid
           grow
+          component="form"
         >
           <Grid.Col span={5} >
             <Text ta="center" fw={650} size="xl">Input</Text>
@@ -68,21 +133,13 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
             <Text ta="center" fw={650} size="xl">Output</Text>
           </Grid.Col>
 
-          <ItemSelectPair data={availableItems} />
-          <Grid.Col span={2} />
-          <ItemSelectPair data={availableItems} />
+          <ItemSelectRow data={availableItems} form={form} rowNumber={0} />
 
-          <ItemSelectPair data={availableItems} />
-          <Grid.Col span={2} />
-          <ItemSelectPair data={availableItems} />
+          <ItemSelectRow data={availableItems} form={form} rowNumber={1} />
 
-          <ItemSelectPair data={availableItems} />
-          <Grid.Col span={2} />
-          <ItemSelectPair data={availableItems} />
+          <ItemSelectRow data={availableItems} form={form} rowNumber={2} />
 
-          <ItemSelectPair data={availableItems} />
-          <Grid.Col span={2} />
-          <ItemSelectPair data={availableItems} />
+          <ItemSelectRow data={availableItems} form={form} rowNumber={3} />
 
           <Grid.Col span={12}>
             <Divider orientation="horizontal" mx="lg" my="sm" />
