@@ -4,6 +4,28 @@ import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, Title } 
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
+interface RecipeFormValues {
+  name: string
+  input0Name: string | undefined
+  input0Quantity: number | undefined,
+  input1Name: string | undefined,
+  input1Quantity: number | undefined,
+  input2Name: string | undefined,
+  input2Quantity: number | undefined,
+  input3Name: string | undefined,
+  input3Quantity: number | undefined,
+  output0Name: string | undefined,
+  output0Quantity: number | undefined,
+  output1Name: string | undefined,
+  output1Quantity: number | undefined,
+  output2Name: string | undefined,
+  output2Quantity: number | undefined,
+  output3Name: string | undefined,
+  output3Quantity: number | undefined,
+  building: string,
+  rate: number | undefined
+}
+
 const ItemSelectRow = ({data, form, rowNumber}: {data?: string[], form: any, rowNumber: number}) => {
   return (
     <>
@@ -56,12 +78,11 @@ const ItemSelectRow = ({data, form, rowNumber}: {data?: string[], form: any, row
   )
 }
 
-
 export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
   const [ availableItems, setAvailableItems ] = useState<string[]>();
   const [ availableBuildings, setAvailableBuildings ] = useState<string[]>();
 
-  const form = useForm({
+  const form = useForm<RecipeFormValues>({
     mode: 'uncontrolled',
     initialValues: {
       name: '',
