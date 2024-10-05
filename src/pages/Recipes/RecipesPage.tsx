@@ -12,6 +12,7 @@ export const RecipesPage = () => {
   const [ selection, setSelection ] = useState<Recipe>();
   const [ itemsListData, setItemsListData ] = useState<any[]>();
 
+  // TODO: I think this should be moved to useMemo too.
   useEffect(() => {
     setItemsListData(Object.entries(database.recipes).map(
       (entry: any, index: any) => (
@@ -32,7 +33,7 @@ export const RecipesPage = () => {
     >
       <ItemSelect height={height} data={itemsListData} />
       <div style={{alignSelf: "stretch", width: 1, backgroundColor: "#444"}}/>
-      <RecipeEditControls height={height} selectedRecipe={selection} />
+      <RecipeEditControls height={height} selectedRecipe={selection}  />
     </Flex>
   )
 }
