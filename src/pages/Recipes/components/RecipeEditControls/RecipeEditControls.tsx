@@ -4,35 +4,42 @@ import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInpu
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
-interface RecipeFormValues {
-  name: string
-  input0Name: string | undefined
-  input0Quantity: number | undefined,
-  input1Name: string | undefined,
-  input1Quantity: number | undefined,
-  input2Name: string | undefined,
-  input2Quantity: number | undefined,
-  input3Name: string | undefined,
-  input3Quantity: number | undefined,
-  output0Name: string | undefined,
-  output0Quantity: number | undefined,
-  output1Name: string | undefined,
-  output1Quantity: number | undefined,
-  output2Name: string | undefined,
-  output2Quantity: number | undefined,
-  output3Name: string | undefined,
-  output3Quantity: number | undefined,
-  building: string,
-  rate: number | undefined
-}
-
-type SelectDataDisplay = {
+type ValueLabelPair = {
   value: string,
   label: string,
   disabled: false
 }
 
-const ItemSelectRow = ({data, form, rowNumber}: {data?: string[], form: any, rowNumber: number}) => {
+const emptyValueLabelPair: ValueLabelPair = {
+  value: "",
+  label: "",
+  disabled: false
+}
+
+
+interface RecipeFormValues {
+  name: string
+  input0Name: ValueLabelPair | undefined
+  input0Quantity: number | undefined,
+  input1Name: ValueLabelPair | undefined,
+  input1Quantity: number | undefined,
+  input2Name: ValueLabelPair | undefined,
+  input2Quantity: number | undefined,
+  input3Name: ValueLabelPair | undefined,
+  input3Quantity: number | undefined,
+  output0Name: ValueLabelPair | undefined,
+  output0Quantity: number | undefined,
+  output1Name: ValueLabelPair | undefined,
+  output1Quantity: number | undefined,
+  output2Name: ValueLabelPair | undefined,
+  output2Quantity: number | undefined,
+  output3Name: ValueLabelPair | undefined,
+  output3Quantity: number | undefined,
+  building: ValueLabelPair,
+  rate: number | undefined
+}
+
+const ItemSelectRow = ({data, form, rowNumber}: {data?: ValueLabelPair[], form: any, rowNumber: number}) => {
   return (
     <>
       <Grid.Col span={4}>
@@ -86,71 +93,117 @@ const ItemSelectRow = ({data, form, rowNumber}: {data?: string[], form: any, row
 
 const initalFormValues: RecipeFormValues = {
   name: '',
-  input0Name: '',
+  input0Name: emptyValueLabelPair,
   input0Quantity: undefined,
 
-  input1Name: '',
+  input1Name: emptyValueLabelPair,
   input1Quantity: undefined,
 
-  input2Name: '',
+  input2Name: emptyValueLabelPair,
   input2Quantity: undefined,
 
-  input3Name: '',
+  input3Name: emptyValueLabelPair,
   input3Quantity: undefined,
 
-  output0Name: '',
+  output0Name: emptyValueLabelPair,
   output0Quantity: undefined,
 
-  output1Name: '',
+  output1Name: emptyValueLabelPair,
   output1Quantity: undefined,
 
-  output2Name: '',
+  output2Name: emptyValueLabelPair,
   output2Quantity: undefined,
 
-  output3Name: '',
+  output3Name: emptyValueLabelPair,
   output3Quantity: undefined,
 
-  building: '',
+  building: emptyValueLabelPair,
   rate: undefined
 }
 
 function mapRecipeToFormValue(recipe: Recipe): RecipeFormValues {
+  let inputs: [ValueLabelPair, number | undefined][] = [];
+  let outputs: [ValueLabelPair, number | undefined][] = [];
+
+  for (let i = 0; i < 4; i++) {
+    try {
+      inputs.push([{
+          value: `${recipe.inputs[i].id}`,
+          label: database.items[recipe.inputs[i].id].name,
+          disabled: false
+        }, 
+        recipe.inputs[i].quantity
+      ]);
+    }
+    catch {
+      inputs.push([{
+        value: "",
+        label: "",
+        disabled: false
+      },
+      undefined
+    ]);
+    }
+  }
+
+  for (let i = 0; i < 4; i++) {
+    try {
+      outputs.push([{
+        value: `${recipe.outputs[i].id}`,
+        label: database.items[recipe.outputs[i].id].name,
+        disabled: false
+      }, 
+      recipe.outputs[i].quantity
+    ]);
+    }
+    catch {
+      outputs.push([{
+        value: "",
+        label: "",
+        disabled: false
+      },
+      undefined
+    ]);
+    }
+  }
+
   return {
     name: recipe.name,
-    input0Name: `${recipe.inputs[0].id ?? ""}`,
-    input0Quantity: recipe.inputs[0].quantity,
+    input0Name: inputs[0][0],
+    input0Quantity: inputs[0][1],
 
-    input1Name: `${recipe.inputs[1].id ?? ""}`,
-    input1Quantity: recipe.inputs[1].quantity,
+    input1Name: inputs[1][0],
+    input1Quantity: inputs[1][1],
 
-    input2Name: `${recipe.inputs[2].id ?? ""}`,
-    input2Quantity: recipe.inputs[2].quantity,
+    input2Name: inputs[2][0],
+    input2Quantity: inputs[2][1],
 
-    input3Name: `${recipe.inputs[3].id ?? ""}`,
-    input3Quantity: recipe.inputs[3].quantity,
+    input3Name: inputs[3][0],
+    input3Quantity: inputs[3][1],
 
-    output0Name: `${recipe.outputs[0].id ?? ""}`,
-    output0Quantity: recipe.outputs[0].quantity,
+    output0Name: outputs[0][0],
+    output0Quantity: outputs[0][1],
 
-    output1Name: `${recipe.outputs[1].id ?? ""}`,
-    output1Quantity: recipe.outputs[1].quantity,
+    output1Name: outputs[1][0],
+    output1Quantity: outputs[1][1],
 
-    output2Name: `${recipe.outputs[2].id ?? ""}`,
-    output2Quantity: recipe.outputs[2].quantity,
+    output2Name: outputs[2][0],
+    output2Quantity: outputs[2][1],
 
-    output3Name: `${recipe.outputs[3].id ?? ""}`,
-    output3Quantity: recipe.outputs[3].quantity,
+    output3Name: outputs[3][0],
+    output3Quantity: outputs[3][1],
 
-    building: `${recipe.building}`,
-    rate: recipe.baseSpeed
+    building: {
+      value: `${recipe.building}` ?? "",
+      label: recipe.building ? database.buildings[recipe.building].name : "",
+      disabled: false
+    },
+    rate: recipe.baseSpeed ?? undefined
   } 
 }
 
 export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
-  // const [ availableItems, setAvailableItems ] = useState<string[]>();
-  // const [ availableBuildings, setAvailableBuildings ] = useState<string[]>();
-
-  const availableItems: SelectDataDisplay[] = useMemo<SelectDataDisplay[]>(() => Object.entries(database.items).map(
+  const availableItems: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.items).map(
     (entry: any, index: any) => ({
       value: `${index}`,
       label: `${entry[1].name}`,
@@ -158,7 +211,7 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
     })
   ), [database.items]);
 
-  const availableBuildings: SelectDataDisplay[] = useMemo<SelectDataDisplay[]>(() => Object.entries(database.buildings).map(
+  const availableBuildings: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.buildings).map(
     (entry: any, index: any) => ({
       value: `${index}`,
       label: `${entry[1].name}`,
