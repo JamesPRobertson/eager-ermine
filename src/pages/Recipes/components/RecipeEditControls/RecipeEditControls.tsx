@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInput } from "@mantine/core";
+import { Button, Divider, Flex, FocusTrapInitialFocus, Grid, Group, NumberInput, Select, Text, TextInput } from "@mantine/core";
 
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
@@ -33,7 +33,7 @@ interface RecipeFormValues {
   output2Quantity: number | undefined,
   output3Name: ValueLabelPair | undefined,
   output3Quantity: number | undefined,
-  building: ValueLabelPair,
+  building: ValueLabelPair | undefined,
   rate: number | undefined
 }
 
@@ -89,33 +89,33 @@ const ItemSelectRow = ({data, form, rowNumber}: {data?: ValueLabelPair[], form: 
   )
 }
 
-const initalFormValues: RecipeFormValues = {
+const initialFormValues: RecipeFormValues = {
   name: '',
-  input0Name: emptyValueLabelPair,
+  input0Name: undefined,
   input0Quantity: undefined,
 
-  input1Name: emptyValueLabelPair,
+  input1Name: undefined,
   input1Quantity: undefined,
 
-  input2Name: emptyValueLabelPair,
+  input2Name: undefined,
   input2Quantity: undefined,
 
-  input3Name: emptyValueLabelPair,
+  input3Name: undefined,
   input3Quantity: undefined,
 
-  output0Name: emptyValueLabelPair,
+  output0Name: undefined,
   output0Quantity: undefined,
 
-  output1Name: emptyValueLabelPair,
+  output1Name: undefined,
   output1Quantity: undefined,
 
-  output2Name: emptyValueLabelPair,
+  output2Name: undefined,
   output2Quantity: undefined,
 
-  output3Name: emptyValueLabelPair,
+  output3Name: undefined,
   output3Quantity: undefined,
 
-  building: emptyValueLabelPair,
+  building: undefined,
   rate: undefined
 }
 
@@ -202,21 +202,12 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
 
   const form = useForm<RecipeFormValues>({
     mode: 'uncontrolled',
-    initialValues: initalFormValues
+    initialValues: selectedRecipe ? mapRecipeToFormValue(selectedRecipe) : initialFormValues
   });
 
   const handleSubmit = (values: RecipeFormValues) => {
     console.log(values);
   }
-
-  useEffect(() => {
-    if (selectedRecipe && selectedRecipe.name != undefined) {
-      form.setValues(mapRecipeToFormValue(selectedRecipe));
-    }
-    else {
-      form.setValues(initalFormValues);
-    }
-  }, [selectedRecipe])
 
   return (
     <Flex
