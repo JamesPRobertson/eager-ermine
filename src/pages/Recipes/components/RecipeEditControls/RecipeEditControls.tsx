@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from "react";
-import { Button, Divider, Flex, FocusTrapInitialFocus, Grid, Group, NumberInput, Select, Text, TextInput } from "@mantine/core";
+import { useMemo } from "react";
+import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInput } from "@mantine/core";
 
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
@@ -8,12 +8,6 @@ type ValueLabelPair = {
   value: string | undefined,
   label: string | undefined,
 }
-
-const emptyValueLabelPair: ValueLabelPair = {
-  value: undefined,
-  label: undefined
-}
-
 
 interface RecipeFormValues {
   name: string
