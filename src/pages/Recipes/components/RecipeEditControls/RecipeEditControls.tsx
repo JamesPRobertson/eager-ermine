@@ -1,9 +1,37 @@
-import { useEffect, useState } from "react";
-import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, Title } from "@mantine/core";
+import { useMemo } from "react";
+import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInput } from "@mantine/core";
 
 import { database } from "lib/database";
+import { useForm } from "@mantine/form";
 
-const ItemSelectPair = ({data}: {data?: string[]}) => {
+type ValueLabelPair = {
+  value: string | undefined,
+  label: string | undefined,
+}
+
+interface RecipeFormValues {
+  name: string
+  input0Name: ValueLabelPair | undefined
+  input0Quantity: number | undefined,
+  input1Name: ValueLabelPair | undefined,
+  input1Quantity: number | undefined,
+  input2Name: ValueLabelPair | undefined,
+  input2Quantity: number | undefined,
+  input3Name: ValueLabelPair | undefined,
+  input3Quantity: number | undefined,
+  output0Name: ValueLabelPair | undefined,
+  output0Quantity: number | undefined,
+  output1Name: ValueLabelPair | undefined,
+  output1Quantity: number | undefined,
+  output2Name: ValueLabelPair | undefined,
+  output2Quantity: number | undefined,
+  output3Name: ValueLabelPair | undefined,
+  output3Quantity: number | undefined,
+  building: ValueLabelPair | undefined,
+  rate: number | undefined
+}
+
+const ItemSelectRow = ({data, form, rowNumber}: {data?: ValueLabelPair[], form: any, rowNumber: number}) => {
   return (
     <>
       <Grid.Col span={4}>
@@ -12,6 +40,8 @@ const ItemSelectPair = ({data}: {data?: string[]}) => {
           clearable
           searchable
           data={data}
+          key={form.key(`input${rowNumber}Name`)}
+          {...form.getInputProps(`input${rowNumber}Name`)}
         />
       </Grid.Col>
       <Grid.Col span={1}>
@@ -21,26 +51,157 @@ const ItemSelectPair = ({data}: {data?: string[]}) => {
           allowNegative={false}
           max={999}
           hideControls
+          placeholder="-"
+          key={form.key(`input${rowNumber}Quantity`)}
+          {...form.getInputProps(`input${rowNumber}Quantity`)}
+        />           
+      </Grid.Col>
+      <Grid.Col span={2} />
+      <Grid.Col span={4}>
+        <Select 
+          placeholder="None"
+          clearable
+          searchable
+          data={data}
+          key={form.key(`output${rowNumber}Name`)}
+          {...form.getInputProps(`output${rowNumber}Name`)}
+        />
+      </Grid.Col>
+      <Grid.Col span={1}>
+        <NumberInput
+          allowDecimal={false}
+          allowLeadingZeros={false}
+          allowNegative={false}
+          max={999}
+          hideControls
+          placeholder="-"
+          key={form.key(`output${rowNumber}Quantity`)}
+          {...form.getInputProps(`output${rowNumber}Quantity`)}
         />           
       </Grid.Col>
     </>
   )
 }
 
+const initialFormValues: RecipeFormValues = {
+  name: '',
+  input0Name: undefined,
+  input0Quantity: undefined,
 
-export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) => {
-  const [ availableItems, setAvailableItems ] = useState<string[]>();
-  const [ availableBuildings, setAvailableBuildings ] = useState<string[]>();
+  input1Name: undefined,
+  input1Quantity: undefined,
 
-  useEffect(() => {
-    setAvailableItems(Object.entries(database.items).map(
-      (entry: any, index: any) => ( `${entry[1].name}`)
-    ));
+  input2Name: undefined,
+  input2Quantity: undefined,
 
-    setAvailableBuildings(Object.entries(database.buildings).map(
-      (entry: any, index: any) => ( `${entry[1].name}`)
-    ));
-  }, []);
+  input3Name: undefined,
+  input3Quantity: undefined,
+
+  output0Name: undefined,
+  output0Quantity: undefined,
+
+  output1Name: undefined,
+  output1Quantity: undefined,
+
+  output2Name: undefined,
+  output2Quantity: undefined,
+
+  output3Name: undefined,
+  output3Quantity: undefined,
+
+  building: undefined,
+  rate: undefined
+}
+
+function mapRecipeToFormValue(recipe: Recipe): RecipeFormValues {
+  let inputs: [ValueLabelPair | undefined, number | undefined][] = [];
+  let outputs: [ValueLabelPair | undefined, number | undefined][] = [];
+
+  for (let i = 0; i < 4; i++) {
+    try {
+      inputs.push([{
+          value: `${recipe.inputs[i].id}`,
+          label: database.items[recipe.inputs[i].id].name,
+        }, 
+        recipe.inputs[i].quantity
+      ]);
+    }
+    catch {
+      inputs.push([undefined, undefined])
+    }
+  }
+
+  for (let i = 0; i < 4; i++) {
+    try {
+      outputs.push([{
+        value: `${recipe.outputs[i].id}`,
+        label: database.items[recipe.outputs[i].id].name,
+      }, 
+      recipe.outputs[i].quantity
+    ]);
+    }
+    catch {
+      outputs.push([undefined, undefined])
+    }
+  }
+
+  return {
+    name: recipe.name,
+    input0Name: inputs[0][0],
+    input0Quantity: inputs[0][1],
+
+    input1Name: inputs[1][0],
+    input1Quantity: inputs[1][1],
+
+    input2Name: inputs[2][0],
+    input2Quantity: inputs[2][1],
+
+    input3Name: inputs[3][0],
+    input3Quantity: inputs[3][1],
+
+    output0Name: outputs[0][0],
+    output0Quantity: outputs[0][1],
+
+    output1Name: outputs[1][0],
+    output1Quantity: outputs[1][1],
+
+    output2Name: outputs[2][0],
+    output2Quantity: outputs[2][1],
+
+    output3Name: outputs[3][0],
+    output3Quantity: outputs[3][1],
+
+    building: {
+      value: `${recipe.building}` ?? "",
+      label: recipe.building ? database.buildings[recipe.building].name : "",
+    },
+    rate: recipe.baseSpeed ?? undefined
+  } 
+}
+
+export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
+  const availableItems: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.items).map(
+    (entry: any, index: any) => ({
+      value: `${index}`,
+      label: `${entry[1].name}`,
+    })
+  ), [database.items]);
+
+  const availableBuildings: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.buildings).map(
+    (entry: any, index: any) => ({
+      value: `${index}`,
+      label: `${entry[1].name}`,
+    })
+  ), [database.buildings]);
+
+  const form = useForm<RecipeFormValues>({
+    mode: 'uncontrolled',
+    initialValues: selectedRecipe ? mapRecipeToFormValue(selectedRecipe) : initialFormValues
+  });
+
+  const handleSubmit = (values: RecipeFormValues) => {
+    console.log(values);
+  }
 
   return (
     <Flex
@@ -49,14 +210,28 @@ export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) 
       gap="lg"
       align="center"
       flex={1}
+      h={height - 40}
+      style={{backgroundColor: "rgba(16, 16, 16, 0.66)"}}
     >
-      <Title>
-        { selectedRecipe ? database.items[selectedRecipe.outputs[0].id].name : "Select a recipe from the left"}
-      </Title>
+      <TextInput
+        variant="unstyled"
+        placeholder="Recipe Name"
+        size="xl"
+        fw={700}
+        ta="center"
+        bg="rgba(255, 255, 255, 0.075)"
+        p={8}
+        style={{borderRadius: 4}}
+        miw={500}
+        key={form.key('name')}
+        {...form.getInputProps('name')}
+      />
       {
         selectedRecipe && 
         <Grid
           grow
+          component="form"
+          onSubmit={form.onSubmit(handleSubmit)}
         >
           <Grid.Col span={5} >
             <Text ta="center" fw={650} size="xl">Input</Text>
@@ -66,24 +241,16 @@ export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) 
             <Text ta="center" fw={650} size="xl">Output</Text>
           </Grid.Col>
 
-          <ItemSelectPair data={availableItems} />
-          <Grid.Col span={2} />
-          <ItemSelectPair data={availableItems} />
+          <ItemSelectRow data={availableItems} form={form} rowNumber={0} />
 
-          <ItemSelectPair data={availableItems} />
-          <Grid.Col span={2} />
-          <ItemSelectPair data={availableItems} />
+          <ItemSelectRow data={availableItems} form={form} rowNumber={1} />
 
-          <ItemSelectPair data={availableItems} />
-          <Grid.Col span={2} />
-          <ItemSelectPair data={availableItems} />
+          <ItemSelectRow data={availableItems} form={form} rowNumber={2} />
 
-          <ItemSelectPair data={availableItems} />
-          <Grid.Col span={2} />
-          <ItemSelectPair data={availableItems} />
+          <ItemSelectRow data={availableItems} form={form} rowNumber={3} />
 
           <Grid.Col span={12}>
-            <Divider orientation="horizontal" mx="lg" />
+            <Divider orientation="horizontal" mx="lg" my="sm" />
           </Grid.Col>
 
           <Grid.Col span={4}>
@@ -129,6 +296,7 @@ export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) 
               </Button>
               <Button
                 color="rgba(0, 128, 0, 1)"
+                type="submit"
               >
                 Save
               </Button>
