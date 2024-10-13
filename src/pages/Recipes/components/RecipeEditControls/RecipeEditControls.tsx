@@ -1,19 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInput } from "@mantine/core";
 
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
 type ValueLabelPair = {
-  value: string,
-  label: string,
-  disabled: false
+  value: string | undefined,
+  label: string | undefined,
 }
 
 const emptyValueLabelPair: ValueLabelPair = {
-  value: "",
-  label: "",
-  disabled: false
+  value: undefined,
+  label: undefined
 }
 
 
@@ -122,27 +120,20 @@ const initalFormValues: RecipeFormValues = {
 }
 
 function mapRecipeToFormValue(recipe: Recipe): RecipeFormValues {
-  let inputs: [ValueLabelPair, number | undefined][] = [];
-  let outputs: [ValueLabelPair, number | undefined][] = [];
+  let inputs: [ValueLabelPair | undefined, number | undefined][] = [];
+  let outputs: [ValueLabelPair | undefined, number | undefined][] = [];
 
   for (let i = 0; i < 4; i++) {
     try {
       inputs.push([{
           value: `${recipe.inputs[i].id}`,
           label: database.items[recipe.inputs[i].id].name,
-          disabled: false
         }, 
         recipe.inputs[i].quantity
       ]);
     }
     catch {
-      inputs.push([{
-        value: "",
-        label: "",
-        disabled: false
-      },
-      undefined
-    ]);
+      inputs.push([undefined, undefined])
     }
   }
 
@@ -151,19 +142,12 @@ function mapRecipeToFormValue(recipe: Recipe): RecipeFormValues {
       outputs.push([{
         value: `${recipe.outputs[i].id}`,
         label: database.items[recipe.outputs[i].id].name,
-        disabled: false
       }, 
       recipe.outputs[i].quantity
     ]);
     }
     catch {
-      outputs.push([{
-        value: "",
-        label: "",
-        disabled: false
-      },
-      undefined
-    ]);
+      outputs.push([undefined, undefined])
     }
   }
 
@@ -196,7 +180,6 @@ function mapRecipeToFormValue(recipe: Recipe): RecipeFormValues {
     building: {
       value: `${recipe.building}` ?? "",
       label: recipe.building ? database.buildings[recipe.building].name : "",
-      disabled: false
     },
     rate: recipe.baseSpeed ?? undefined
   } 
@@ -207,7 +190,6 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
     (entry: any, index: any) => ({
       value: `${index}`,
       label: `${entry[1].name}`,
-      disabled: false
     })
   ), [database.items]);
 
@@ -215,7 +197,6 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
     (entry: any, index: any) => ({
       value: `${index}`,
       label: `${entry[1].name}`,
-      disabled: false
     })
   ), [database.buildings]);
 
