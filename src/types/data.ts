@@ -32,5 +32,5 @@ type Recipe = {
   inputs: Input[],
   outputs: Output[],
   building: number,
-  baseSpeed?: number
+  baseRate?: number
 }

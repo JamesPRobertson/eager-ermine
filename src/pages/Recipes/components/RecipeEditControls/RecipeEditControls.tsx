@@ -9,7 +9,8 @@ type ValueLabelPair = {
   label?: string,
 }
 
-interface RecipeFormValues {
+export interface RecipeFormValues {
+  [index: string]: string | ValueLabelPair | number | undefined;
   name: string
   input0Name?: ValueLabelPair;
   input0Quantity?: number;
@@ -113,35 +114,25 @@ const initialFormValues: RecipeFormValues = {
   rate: undefined
 }
 
-function mapRecipeToFormValue(recipe: Recipe): RecipeFormValues {
-  let inputs: [ValueLabelPair?, number?][] = [];
-  let outputs: [ValueLabelPair?, number?][] = [];
+function mapRecipeToFormValue(recipe: Recipe): any {
+  let inputs: [string?, number?][] = [];
+  let outputs: [string?, number?][] = [];
 
   for (let i = 0; i < 4; i++) {
     try {
-      inputs.push([{
-          value: `${recipe.inputs[i].id}`,
-          label: database.items[recipe.inputs[i].id].name,
-        }, 
-        recipe.inputs[i].quantity
-      ]);
+      inputs.push([`${recipe.inputs[i].id}`, recipe.inputs[i].quantity]);
     }
     catch {
-      inputs.push([undefined, undefined])
+      inputs.push([undefined, undefined]);
     }
   }
 
   for (let i = 0; i < 4; i++) {
     try {
-      outputs.push([{
-        value: `${recipe.outputs[i].id}`,
-        label: database.items[recipe.outputs[i].id].name,
-      }, 
-      recipe.outputs[i].quantity
-    ]);
+      outputs.push([`${recipe.outputs[i].id}`, recipe.outputs[i].quantity]);
     }
     catch {
-      outputs.push([undefined, undefined])
+      outputs.push([undefined, undefined]);
     }
   }
 
@@ -171,12 +162,32 @@ function mapRecipeToFormValue(recipe: Recipe): RecipeFormValues {
     output3Name: outputs[3][0],
     output3Quantity: outputs[3][1],
 
-    building: {
-      value: `${recipe.building}` ?? "",
-      label: recipe.building ? database.buildings[recipe.building].name : "",
-    },
-    rate: recipe.baseSpeed ?? undefined
+    building: `${recipe.building}` ?? "",
+    rate: recipe.baseRate ?? undefined
   } 
+}
+
+function convertFormValuesToRecipe(value: RecipeFormValues): Recipe {
+  let newRecipe: Recipe = {
+    id: -1,
+    name: value.name,
+    inputs: [],
+    outputs: [],
+    building: -1,
+    baseRate: 0
+  };
+
+  for (let i = 0; i <= 3; i++) {
+    if (value[`input${i}Name`] !== undefined) {
+      newRecipe.inputs.push(database.items[value[`input${i}Name`]]);
+    }
+
+    if (value[`output${i}Name`] !== undefined) {
+      newRecipe.outputs.push(database.items[value[`output${i}Name`]]);
+    }
+  }
+
+  return newRecipe;
 }
 
 export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
@@ -199,8 +210,9 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
     initialValues: selectedRecipe ? mapRecipeToFormValue(selectedRecipe) : initialFormValues
   });
 
-  const handleSubmit = (values: RecipeFormValues) => {
+  function handleSubmit(values: RecipeFormValues) {
     console.log(values);
+    console.log(convertFormValuesToRecipe(values));
   }
 
   return (
@@ -258,7 +270,10 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
               label="Building"
               placeholder="None"
               searchable
+              clearable
               data={availableBuildings}
+              key={form.key(`building`)}
+              {...form.getInputProps(`building`)}
             />
           </Grid.Col>
           <Grid.Col span={2}>
@@ -269,6 +284,8 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
               allowLeadingZeros={false}
               allowNegative={false}
               hideControls
+              key={form.key(`rate`)}
+              {...form.getInputProps(`rate`)}
             />
           </Grid.Col>
           <Grid.Col span={6}></Grid.Col>

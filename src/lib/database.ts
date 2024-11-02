@@ -36,7 +36,25 @@ class Database {
       this.items[entry.id] = entry;
     }
     else {
-      console.log(`ID ${entry.id} Already exists`);
+      console.log(`ID ${entry.id} doesnt' exist`);
+    }
+  }
+
+  addRecipe(newEntry: Recipe): void {
+    if (this.recipes[newEntry.id] === undefined) {
+      this.recipes[newEntry.id] = newEntry;
+    }
+    else {
+      console.log(`ID ${newEntry.id} Already exists`);
+    }
+  }
+
+  updateRecipe(entry: Recipe): void {
+    if (this.recipes[entry.id] !== undefined) {
+      this.recipes[entry.id] = entry;
+    }
+    else {
+      console.log(`ID ${entry.id} doesnt' exist`);
     }
   }
 
@@ -60,6 +78,20 @@ class Database {
     invoke('write_file', {
       path: "/Users/james/Projects/tauri/eager-ermine/dist/items.json",
       data: JSON.stringify({items: this.items}, null, 2)
+    })
+      .then(
+        (response: any) => {
+          console.log(response);
+        }
+      )
+  }
+
+  commitRecipes(): void {
+    console.log(JSON.stringify(this.recipes, null, 2));
+
+    invoke('write_file', {
+      path: "/Users/james/Projects/tauri/eager-ermine/dist/recipes.json",
+      data: JSON.stringify({recipes: this.recipes}, null, 2)
     })
       .then(
         (response: any) => {
