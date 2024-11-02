@@ -173,17 +173,23 @@ function convertFormValuesToRecipe(value: RecipeFormValues): Recipe {
     name: value.name,
     inputs: [],
     outputs: [],
-    building: -1,
-    baseRate: 0
+    building: value.building! as number,
+    baseRate: value.rate
   };
 
   for (let i = 0; i <= 3; i++) {
     if (value[`input${i}Name`] !== undefined) {
-      newRecipe.inputs.push(database.items[value[`input${i}Name`]]);
+      newRecipe.inputs.push({
+        id: value[`input${i}Name`] as number,
+        quantity: value[`input${i}Quantity`] as number
+      });
     }
 
     if (value[`output${i}Name`] !== undefined) {
-      newRecipe.outputs.push(database.items[value[`output${i}Name`]]);
+      newRecipe.outputs.push({
+        id: value[`output${i}Name`] as number,
+        quantity: value[`output${i}Quantity`] as number
+      });
     }
   }
 
