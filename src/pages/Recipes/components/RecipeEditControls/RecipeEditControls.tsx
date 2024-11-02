@@ -5,30 +5,30 @@ import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
 type ValueLabelPair = {
-  value: string | undefined,
-  label: string | undefined,
+  value?: string,
+  label?: string,
 }
 
 interface RecipeFormValues {
   name: string
-  input0Name: ValueLabelPair | undefined
-  input0Quantity: number | undefined,
-  input1Name: ValueLabelPair | undefined,
-  input1Quantity: number | undefined,
-  input2Name: ValueLabelPair | undefined,
-  input2Quantity: number | undefined,
-  input3Name: ValueLabelPair | undefined,
-  input3Quantity: number | undefined,
-  output0Name: ValueLabelPair | undefined,
-  output0Quantity: number | undefined,
-  output1Name: ValueLabelPair | undefined,
-  output1Quantity: number | undefined,
-  output2Name: ValueLabelPair | undefined,
-  output2Quantity: number | undefined,
-  output3Name: ValueLabelPair | undefined,
-  output3Quantity: number | undefined,
-  building: ValueLabelPair | undefined,
-  rate: number | undefined
+  input0Name?: ValueLabelPair;
+  input0Quantity?: number;
+  input1Name?: ValueLabelPair;
+  input1Quantity?: number;
+  input2Name?: ValueLabelPair;
+  input2Quantity?: number;
+  input3Name?: ValueLabelPair;
+  input3Quantity?: number;
+  output0Name?: ValueLabelPair;
+  output0Quantity?: number;
+  output1Name?: ValueLabelPair;
+  output1Quantity?: number;
+  output2Name?: ValueLabelPair;
+  output2Quantity?: number;
+  output3Name?: ValueLabelPair;
+  output3Quantity?: number;
+  building?: ValueLabelPair;
+  rate?: number;
 }
 
 const ItemSelectRow = ({data, form, rowNumber}: {data?: ValueLabelPair[], form: any, rowNumber: number}) => {
@@ -114,8 +114,8 @@ const initialFormValues: RecipeFormValues = {
 }
 
 function mapRecipeToFormValue(recipe: Recipe): RecipeFormValues {
-  let inputs: [ValueLabelPair | undefined, number | undefined][] = [];
-  let outputs: [ValueLabelPair | undefined, number | undefined][] = [];
+  let inputs: [ValueLabelPair?, number?][] = [];
+  let outputs: [ValueLabelPair?, number?][] = [];
 
   for (let i = 0; i < 4; i++) {
     try {
