@@ -34,8 +34,7 @@ export const EditControls = ({selected}: {selected?: Item}) => {
               database.updateItem({id: selected.id, name: values.name, tags: selected.tags});
               database.commitItems();
             })
-          }
-          }
+          }}
           direction="column"
           gap="md"
           h="100%"

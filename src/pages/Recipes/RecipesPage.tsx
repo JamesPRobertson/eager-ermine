@@ -8,7 +8,7 @@ import { database } from "lib/database";
 import { RecipeEditControls } from "./components/RecipeEditControls/RecipeEditControls";
 
 export const RecipesPage = () => {
-  const { height, width } = useViewportSize();
+  const { height, } = useViewportSize();
   const [ selection, setSelection ] = useState<Recipe>();
   const [ itemsListData, setItemsListData ] = useState<any[]>();
 

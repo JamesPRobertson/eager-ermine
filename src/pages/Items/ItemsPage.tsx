@@ -1,4 +1,4 @@
-import { Button, Flex } from "@mantine/core"
+import { Flex } from "@mantine/core"
 import { useViewportSize } from "@mantine/hooks";
 import { ItemEntry, ItemSelect } from "components/ItemSelect/ItemSelect";
 import { EditControls } from "./components/ItemEditControls/ItemEditControls";
@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { database } from "lib/database";
 
 export const ItemsPage = () => {
-  const { height, width } = useViewportSize();
+  const { height, } = useViewportSize();
   const [ selectedItem, setSelectedItem ] = useState<Item>();
   const [ itemsListData, setItemsListData ] = useState<any[]>();
 

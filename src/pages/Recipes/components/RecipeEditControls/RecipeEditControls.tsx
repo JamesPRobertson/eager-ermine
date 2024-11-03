@@ -10,25 +10,25 @@ type ValueLabelPair = {
 }
 
 export interface RecipeFormValues {
-  [index: string]: string | ValueLabelPair | number | undefined;
+  [index: string]: string | number | undefined;
   name: string
-  input0Name?: ValueLabelPair;
+  input0Name?: number;
   input0Quantity?: number;
-  input1Name?: ValueLabelPair;
+  input1Name?: number;
   input1Quantity?: number;
-  input2Name?: ValueLabelPair;
+  input2Name?: number;
   input2Quantity?: number;
-  input3Name?: ValueLabelPair;
+  input3Name?: number;
   input3Quantity?: number;
-  output0Name?: ValueLabelPair;
+  output0Name?: number;
   output0Quantity?: number;
-  output1Name?: ValueLabelPair;
+  output1Name?: number;
   output1Quantity?: number;
-  output2Name?: ValueLabelPair;
+  output2Name?: number;
   output2Quantity?: number;
-  output3Name?: ValueLabelPair;
+  output3Name?: number;
   output3Quantity?: number;
-  building?: ValueLabelPair;
+  building?: number;
   rate?: number;
 }
 
@@ -173,7 +173,7 @@ function convertFormValuesToRecipe(value: RecipeFormValues): Recipe {
     name: value.name,
     inputs: [],
     outputs: [],
-    building: value.building! as number,
+    building: value.building as number,
     baseRate: value.rate
   };
 
@@ -196,6 +196,10 @@ function convertFormValuesToRecipe(value: RecipeFormValues): Recipe {
   return newRecipe;
 }
 
+function validateQuantity(quantityField: number | undefined, nameField: number | undefined): string | null {
+  return (!quantityField && nameField) || (quantityField && !nameField) ? "Invalid" : null
+}
+
 export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
   const availableItems: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.items).map(
     (entry: any, index: any) => ({
@@ -213,7 +217,20 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
 
   const form = useForm<RecipeFormValues>({
     mode: 'uncontrolled',
-    initialValues: selectedRecipe ? mapRecipeToFormValue(selectedRecipe) : initialFormValues
+    initialValues: selectedRecipe ? mapRecipeToFormValue(selectedRecipe) : initialFormValues,
+    validate: {
+      name: (value) => (!value ? "Invalid name" : null),
+      input0Quantity: (value, values) => validateQuantity(value, values.input0Name),
+      input1Quantity: (value, values) => validateQuantity(value, values.input1Name),
+      input2Quantity: (value, values) => validateQuantity(value, values.input2Name),
+      input3Quantity: (value, values) => validateQuantity(value, values.input3Name),
+      output0Quantity: (value, values) => validateQuantity(value, values.output0Name),
+      output1Quantity: (value, values) => validateQuantity(value, values.output1Name),
+      output2Quantity: (value, values) => validateQuantity(value, values.output2Name),
+      output3Quantity: (value, values) => validateQuantity(value, values.output3Name),
+      building: (value) => (!value || value < 0 ? "Invalid" : null),
+      rate: (value) => (!value || value <= 0 ? "Invalid" : null)
+    }
   });
 
   function handleSubmit(values: RecipeFormValues) {

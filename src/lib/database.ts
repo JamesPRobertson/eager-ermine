@@ -88,6 +88,10 @@ class Database {
 
   commitRecipes(): void {
     console.log(JSON.stringify(this.recipes, null, 2));
+    console.warn("Exiting commitRecipes()!!");
+
+    // Test code for now :)
+    return;
 
     invoke('write_file', {
       path: "/Users/james/Projects/tauri/eager-ermine/dist/recipes.json",
