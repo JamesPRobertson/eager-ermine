@@ -19,7 +19,7 @@ export const RecipesPage = () => {
         <ItemEntry
           key={index}
           entry={entry}
-          displayName={database.items[entry[1].outputs[0].id].name}
+          displayName={database.recipes[index].name}
           setter={setSelection}
         />
       )

@@ -42,7 +42,12 @@ class Database {
 
   addRecipe(newEntry: Recipe): void {
     if (this.recipes[newEntry.id] === undefined) {
+      if (newEntry.id === -1) {
+        newEntry.id = Object.keys(this.recipes).length;
+      }
+
       this.recipes[newEntry.id] = newEntry;
+      console.log(this.recipes);
     }
     else {
       console.log(`ID ${newEntry.id} Already exists`);

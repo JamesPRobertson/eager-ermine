@@ -235,7 +235,13 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
 
   function handleSubmit(values: RecipeFormValues) {
     console.log(values);
-    console.log(convertFormValuesToRecipe(values));
+    let convertedRecipe = convertFormValuesToRecipe(values);
+    console.log(convertedRecipe);
+    if (selectedRecipe?.id === undefined) {
+      convertedRecipe.id = -1;
+    }
+
+    database.addRecipe(convertedRecipe);
   }
 
   return (
