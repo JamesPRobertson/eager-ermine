@@ -16,7 +16,7 @@ export const BuildingsPage = () => {
     setListData(Object.entries(database.buildings).map(
       (entry: any, index: any) => <ItemEntry key={index} entry={entry} setter={setSelectedEntry}/>
     ))
-  }, [listData]);
+  }, []);
 
   return (
     <Flex

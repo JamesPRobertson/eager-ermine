@@ -1,6 +1,6 @@
-import { Flex } from "@mantine/core"
+import { Flex } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
-import { ItemEntry, ItemSelect  } from "components/ItemSelect/ItemSelect";
+import { ItemEntry, ItemSelect } from "components/ItemSelect/NewItemSelect";
 
 import { useEffect, useState } from "react";
 
@@ -8,32 +8,25 @@ import { database } from "lib/database";
 import { RecipeEditControls } from "./components/RecipeEditControls/RecipeEditControls";
 
 export const RecipesPage = () => {
-  const { height, } = useViewportSize();
-  const [ selection, setSelection ] = useState<Recipe>();
-  const [ itemsListData, setItemsListData ] = useState<any[]>();
+  const { height } = useViewportSize();
+  const [selection, setSelection] = useState<Recipe>();
+  const [itemsListData, setItemsListData] = useState<any[]>();
 
   // TODO: I think this should be moved to useMemo too.
   useEffect(() => {
-    setItemsListData(Object.entries(database.recipes).map(
-      (entry: any, index: any) => (
-        <ItemEntry
-          key={index}
-          entry={entry}
-          displayName={database.recipes[index].name}
-          setter={setSelection}
-        />
-      )
-    ))
-  }, [itemsListData]);
+    setItemsListData(
+      Object.entries(database.recipes).map((entry: [string, Recipe]) => ({
+        label: entry[1].name,
+        value: entry[1].id
+      }))
+    );
+  }, []);
 
   return (
-    <Flex
-      align="start"
-      h={height - 40}
-    >
-      <ItemSelect height={height} data={itemsListData} />
-      <div style={{alignSelf: "stretch", width: 1, backgroundColor: "#444"}}/>
+    <Flex align="start" h={height - 40}>
+      <ItemSelect data={itemsListData} onSelect={setSelection} />
+      <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
       <RecipeEditControls height={height} selectedRecipe={selection} key={selection?.id} />
     </Flex>
-  )
-}
+  );
+};

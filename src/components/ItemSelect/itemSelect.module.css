@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em 0em;
+  gap: 0.5em;
+  justify-content: start;
+  width: 250px;
+  background-color: rgba(0,0,0, 0.25);
+  height: 100%;
+}
+
+.searchField {
+  background-color: transparent;
+  margin: 0px 4px;
+  padding: 0.5em;
+  border-bottom: solid rgba(255, 255,255, 0.08) 1px;
+}

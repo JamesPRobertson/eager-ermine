@@ -239,9 +239,12 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
     console.log(convertedRecipe);
     if (selectedRecipe?.id === undefined) {
       convertedRecipe.id = -1;
+      database.addRecipe(convertedRecipe);
     }
-
-    database.addRecipe(convertedRecipe);
+    else {
+      convertedRecipe.id = selectedRecipe.id;
+      database.updateRecipe(convertedRecipe);
+    }
   }
 
   return (
