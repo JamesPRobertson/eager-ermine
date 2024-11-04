@@ -9,25 +9,23 @@ export const ItemEntry = ({ label }: { label: string }) => {
 };
 
 type ObjectEntry = {
-  label: string,
-  value: string
-}
+  label: string;
+  value: string;
+};
 
 // TODO: rename this to 'ObjectSelect' or similar
 export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect: (value: any) => void }) => {
-  const [ search, setSearch ] = useDebouncedState<string>('', 200);
-
-  console.log(search);
+  const [search, setSearch] = useDebouncedState<string>("", 200);
 
   const options =
     data &&
     data
-    .filter((entry: ObjectEntry) => (entry.label.toLowerCase().includes(search.toLowerCase().trim())))
-    .map((entry: ObjectEntry) => (
-      <Combobox.Option value={`${entry.value}`} key={entry.value}>
-        <ItemEntry label={entry.label} />
-      </Combobox.Option>
-    ));
+      .filter((entry: ObjectEntry) => entry.label.toLowerCase().includes(search.toLowerCase().trim()))
+      .map((entry: ObjectEntry) => (
+        <Combobox.Option value={`${entry.value}`} key={entry.value}>
+          <ItemEntry label={entry.label} />
+        </Combobox.Option>
+      ));
 
   return (
     <div className={classes.container}>
@@ -45,7 +43,9 @@ export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect:
             placeholder="Search"
             variant="unstyled"
             className={classes.searchField}
-            onChange={(event) => { setSearch(event.currentTarget.value) }}
+            onChange={(event) => {
+              setSearch(event.currentTarget.value);
+            }}
           />
         </Combobox.EventsTarget>
         <Combobox.Options>{options}</Combobox.Options>

@@ -4,6 +4,8 @@ import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInpu
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
+import classes from "./RecipeEditControls.module.css";
+
 type ValueLabelPair = {
   value?: string,
   label?: string,
@@ -258,14 +260,12 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
       style={{backgroundColor: "rgba(16, 16, 16, 0.66)"}}
     >
       <TextInput
+        classNames={{
+          input: classes.nameInput
+        }}
         variant="unstyled"
         placeholder="Recipe Name"
         size="xl"
-        fw={700}
-        ta="center"
-        bg="rgba(255, 255, 255, 0.075)"
-        p={8}
-        style={{borderRadius: 4}}
         miw={500}
         key={form.key('name')}
         {...form.getInputProps('name')}
