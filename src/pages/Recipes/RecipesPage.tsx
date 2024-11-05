@@ -24,7 +24,12 @@ export const RecipesPage = () => {
 
   return (
     <Flex align="start" h={height - 40}>
-      <ItemSelect data={itemsListData} onSelect={(index) => { setSelection(database.recipes[index]) }} />
+      <ItemSelect
+        data={itemsListData}
+        onSelect={(index: number) => {
+          setSelection(database.recipes[index]);
+        }}
+      />
       <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
       <RecipeEditControls height={height} selectedRecipe={selection} key={selection?.id} />
     </Flex>

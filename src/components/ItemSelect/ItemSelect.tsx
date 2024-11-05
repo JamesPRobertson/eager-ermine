@@ -13,7 +13,7 @@ type ObjectEntry = {
 };
 
 // TODO: rename this to 'ObjectSelect' or similar
-export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect: (value: any) => void }) => {
+export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect: (index: number) => void }) => {
   const [search, setSearch] = useDebouncedState<string>("", 200);
 
   const options =
