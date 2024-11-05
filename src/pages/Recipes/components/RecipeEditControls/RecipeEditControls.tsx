@@ -4,7 +4,11 @@ import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInpu
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
+// This is REALLY confusing
 import classes from "./RecipeEditControls.module.css";
+// I don't know if the import order matters, but on refresh these
+// classes get wiped out somehow??
+
 
 type ValueLabelPair = {
   value?: string,

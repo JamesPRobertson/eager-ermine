@@ -1,34 +1,51 @@
-import { Button, ScrollArea, Stack } from "@mantine/core"
+import { Combobox, Text, TextInput } from "@mantine/core";
+import { useDebouncedState } from "@mantine/hooks";
 
-export const ItemEntry = ({entry, setter, displayName}: any) => {
-  return (
-    <Button
-      variant="subtle"
-      color="gray"
-      justify="start"
-      key={entry[0]}
-      onClick={() => {
-        setter(entry[1])
-      }}
-    >
-      { displayName ?? entry[1].name}
-    </Button>
-  )
-}
+import classes from "./itemSelect.module.css";
 
-export const ItemSelect = ({height, data}: {height: number, data: any}) => {
+export const ItemEntry = ({ label }: { label: string }) => {
+  return <Text>{label}</Text>;
+};
+
+type ObjectEntry = {
+  label: string;
+  value: string;
+};
+
+// TODO: rename this to 'ObjectSelect' or similar
+export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect: (value: any) => void }) => {
+  const [search, setSearch] = useDebouncedState<string>("", 200);
+
+  const options =
+    data &&
+    data
+      .filter((entry: ObjectEntry) => entry.label.toLowerCase().includes(search.toLowerCase().trim()))
+      .map((entry: ObjectEntry) => (
+        <Combobox.Option value={`${entry.value}`} key={entry.value}>
+          <ItemEntry label={entry.label} />
+        </Combobox.Option>
+      ));
+
   return (
-    <ScrollArea.Autosize
-      h={height - 40}
-      style={{backgroundColor: "rgba(24, 24, 24, 0.50)"}}
-    >
-      <Stack
-        gap={1}
-        style={{width: 250}}
-        p="xs"
+    <div className={classes.container}>
+      <Combobox
+        onOptionSubmit={(value: any) => {
+          console.log(value);
+          onSelect(value);
+        }}
       >
-        {data}
-      </Stack>
-    </ScrollArea.Autosize>
-  )
-}
+        <Combobox.EventsTarget>
+          <TextInput
+            placeholder="Search"
+            variant="unstyled"
+            className={classes.searchField}
+            onChange={(event) => {
+              setSearch(event.currentTarget.value);
+            }}
+          />
+        </Combobox.EventsTarget>
+        <Combobox.Options>{options}</Combobox.Options>
+      </Combobox>
+    </div>
+  );
+};

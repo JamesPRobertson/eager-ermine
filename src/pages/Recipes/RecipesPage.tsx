@@ -1,6 +1,6 @@
 import { Flex } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
-import { ItemEntry, ItemSelect } from "components/ItemSelect/NewItemSelect";
+import { ItemSelect } from "components/ItemSelect/ItemSelect";
 
 import { useEffect, useState } from "react";
 
@@ -24,7 +24,7 @@ export const RecipesPage = () => {
 
   return (
     <Flex align="start" h={height - 40}>
-      <ItemSelect data={itemsListData} onSelect={setSelection} />
+      <ItemSelect data={itemsListData} onSelect={(index) => { setSelection(database.recipes[index]) }} />
       <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
       <RecipeEditControls height={height} selectedRecipe={selection} key={selection?.id} />
     </Flex>
