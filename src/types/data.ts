@@ -34,3 +34,8 @@ type Recipe = {
   building: number,
   baseRate?: number
 }
+
+type ObjectEntry = {
+  label: string;
+  value: string;
+};

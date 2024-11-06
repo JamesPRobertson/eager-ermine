@@ -10,13 +10,13 @@ import { BuildingEditControls } from "./components/BuildingEditControls/Building
 export const BuildingsPage = () => {
   const { height } = useViewportSize();
   const [selectedEntry, setSelectedEntry] = useState<Building>();
-  const [listData, setListData] = useState<any[]>();
+  const [listData, setListData] = useState<ObjectEntry[]>();
 
   useEffect(() => {
     setListData(
       Object.entries(database.buildings).map((entry: [string, Building]) => ({
-        label: entry[1].name,
-        value: entry[1].id
+        label: `${entry[1].name}`,
+        value: `${entry[1].id}`
       }))
     );
   }, []);

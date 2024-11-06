@@ -7,11 +7,6 @@ export const ItemEntry = ({ label }: { label: string }) => {
   return <Text>{label}</Text>;
 };
 
-type ObjectEntry = {
-  label: string;
-  value: string;
-};
-
 // TODO: rename this to 'ObjectSelect' or similar
 export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect: (index: number) => void }) => {
   const [search, setSearch] = useDebouncedState<string>("", 200);

@@ -10,13 +10,13 @@ import { database } from "lib/database";
 export const ItemsPage = () => {
   const { height } = useViewportSize();
   const [selectedItem, setSelectedItem] = useState<Item>();
-  const [itemsListData, setItemsListData] = useState<any[]>();
+  const [itemsListData, setItemsListData] = useState<ObjectEntry[]>();
 
   useEffect(() => {
     setItemsListData(
       Object.entries(database.items).map((entry: [string, Item]) => ({
-        label: entry[1].name,
-        value: entry[1].id
+        label: `${entry[1].name}`,
+        value: `${entry[1].id}`
       }))
     );
   }, []);

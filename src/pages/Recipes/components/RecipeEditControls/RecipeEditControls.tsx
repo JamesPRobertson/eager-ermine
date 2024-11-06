@@ -4,10 +4,7 @@ import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInpu
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
-// This is REALLY confusing
 import classes from "./RecipeEditControls.module.css";
-// I don't know if the import order matters, but on refresh these
-// classes get wiped out somehow??
 
 
 type ValueLabelPair = {
@@ -184,14 +181,14 @@ function convertFormValuesToRecipe(value: RecipeFormValues): Recipe {
   };
 
   for (let i = 0; i <= 3; i++) {
-    if (value[`input${i}Name`] !== undefined) {
+    if (value[`input${i}Name`] !== undefined && value[`input${i}Name`] !== null) {
       newRecipe.inputs.push({
         id: value[`input${i}Name`] as number,
         quantity: value[`input${i}Quantity`] as number
       });
     }
 
-    if (value[`output${i}Name`] !== undefined) {
+    if (value[`output${i}Name`] !== undefined && value[`input${i}Name`] !== null) {
       newRecipe.outputs.push({
         id: value[`output${i}Name`] as number,
         quantity: value[`output${i}Quantity`] as number

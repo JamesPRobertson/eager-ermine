@@ -10,14 +10,14 @@ import { RecipeEditControls } from "./components/RecipeEditControls/RecipeEditCo
 export const RecipesPage = () => {
   const { height } = useViewportSize();
   const [selection, setSelection] = useState<Recipe>();
-  const [itemsListData, setItemsListData] = useState<any[]>();
+  const [itemsListData, setItemsListData] = useState<ObjectEntry[]>();
 
   // TODO: I think this should be moved to useMemo too.
   useEffect(() => {
     setItemsListData(
       Object.entries(database.recipes).map((entry: [string, Recipe]) => ({
-        label: entry[1].name,
-        value: entry[1].id
+        label: `${entry[1].name}`,
+        value: `${entry[1].id}`
       }))
     );
   }, []);
