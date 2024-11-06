@@ -251,6 +251,8 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
       convertedRecipe.id = selectedRecipe.id;
       database.updateRecipe(convertedRecipe);
     }
+
+    console.log(database.recipes);
   }
 
   return (

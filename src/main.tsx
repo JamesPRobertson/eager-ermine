@@ -1,3 +1,7 @@
+// Loading this before anything else prevents Mantine
+// from overruling .module.css files.
+import '@mantine/core/styles.css';
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { MantineProvider } from "@mantine/core";
@@ -10,7 +14,6 @@ import { ItemsPage } from "./pages/Items/ItemsPage";
 import { BuildingsPage } from "pages/Buildings/BuildingsPage";
 import { RecipesPage } from "pages/Recipes/RecipesPage";
 
-import '@mantine/core/styles.css';
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

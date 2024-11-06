@@ -30,7 +30,6 @@ export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect:
     <div className={classes.container}>
       <Combobox
         onOptionSubmit={(value: any) => {
-          console.log(value);
           onSelect(value);
         }}
       >
