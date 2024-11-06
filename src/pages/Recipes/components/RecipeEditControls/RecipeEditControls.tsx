@@ -205,14 +205,14 @@ function validateQuantity(quantityField: number | undefined, nameField: number |
 
 export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
   const availableItems: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.items).map(
-    (entry: any, index: any) => ({
+    (entry: [string, Item], index: number) => ({
       value: `${index}`,
       label: `${entry[1].name}`,
     })
   ), [database.items]);
 
   const availableBuildings: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.buildings).map(
-    (entry: any, index: any) => ({
+    (entry: [string, Building], index: number) => ({
       value: `${index}`,
       label: `${entry[1].name}`,
     })
