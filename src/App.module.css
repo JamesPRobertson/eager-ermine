@@ -1,6 +1,6 @@
 .navbar {
-  padding: 12px;
   gap: 8px;
+  align-items: center;
 }
 
 .inputs {

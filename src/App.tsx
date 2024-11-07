@@ -31,6 +31,7 @@ const NavbarLink = ({ icon: Icon, label, target, active, onClick }: NavbarLinkPr
   );
 };
 
+// TODO: add a little divider between home and the rest
 const navOptions = [
   { icon: MdHouse, label: "Home", target: "/home" },
   { icon: MdOutlineAddBox, label: "Items", target: "/items" },
@@ -43,9 +44,6 @@ export const App = () => {
   const [active, setActive] = useState(0);
   const { height } = useViewportSize();
 
-  const appShellHeight = 40;
-  const mainHeight = height - appShellHeight;
-
   const links = navOptions.map((link, index) => (
     <NavbarLink {...link} key={link.label} active={index === active} onClick={() => setActive(index)} />
   ));
@@ -53,21 +51,14 @@ export const App = () => {
   return (
     <div className={classes.appMain}>
       <AppShell
-        header={{ height: appShellHeight }}
-        navbar={{ width: 75, breakpoint: "sm", collapsed: { desktop: false } }}
+        navbar={{ width: 65, breakpoint: "sm", collapsed: { desktop: false } }}
         classNames={{ navbar: classes.navbar }}
         styles={{
           main: {
-            height: mainHeight
+            height: height
           }
         }}
       >
-        <AppShell.Header>
-          <Group px="md" h="100%">
-            <MdForest style={{ width: rem(25), height: rem(25), marginLeft: 8, fill: "green" }} />
-            <Text>EE Factory Planner</Text>
-          </Group>
-        </AppShell.Header>
         <AppShell.Navbar>{links}</AppShell.Navbar>
         <AppShell.Main>
           <Outlet />
