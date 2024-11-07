@@ -1,6 +1,7 @@
 import { AppShell, Group, rem, Text, Tooltip, UnstyledButton } from "@mantine/core";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
+import { useViewportSize } from "@mantine/hooks";
 
 import { MdHouse, MdOutlineAddBox, MdFactory, MdMenuBook, MdGridOn, MdForest } from "react-icons/md";
 
@@ -40,6 +41,10 @@ const navOptions = [
 
 export const App = () => {
   const [active, setActive] = useState(0);
+  const { height } = useViewportSize();
+
+  const appShellHeight = 40;
+  const mainHeight = height - appShellHeight;
 
   const links = navOptions.map((link, index) => (
     <NavbarLink {...link} key={link.label} active={index === active} onClick={() => setActive(index)} />
@@ -48,9 +53,14 @@ export const App = () => {
   return (
     <div className={classes.appMain}>
       <AppShell
-        header={{ height: 40 }}
+        header={{ height: appShellHeight }}
         navbar={{ width: 75, breakpoint: "sm", collapsed: { desktop: false } }}
         classNames={{ navbar: classes.navbar }}
+        styles={{
+          main: {
+            height: mainHeight
+          }
+        }}
       >
         <AppShell.Header>
           <Group px="md" h="100%">

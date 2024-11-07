@@ -1,5 +1,4 @@
 import { Flex } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
 import { ItemSelect } from "components/ItemSelect/ItemSelect";
 import { EditControls } from "./components/ItemEditControls/ItemEditControls";
 
@@ -8,7 +7,6 @@ import { useEffect, useState } from "react";
 import { database } from "lib/database";
 
 export const ItemsPage = () => {
-  const { height } = useViewportSize();
   const [selectedItem, setSelectedItem] = useState<Item>();
   const [itemsListData, setItemsListData] = useState<ObjectEntry[]>();
 
@@ -22,7 +20,7 @@ export const ItemsPage = () => {
   }, []);
 
   return (
-    <Flex align="start" h={height - 40}>
+    <Flex align="start" h="100%">
       <ItemSelect
         data={itemsListData}
         onSelect={(index: number) => {

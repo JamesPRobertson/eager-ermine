@@ -203,7 +203,7 @@ function validateQuantity(quantityField: number | undefined, nameField: number |
   return (!quantityField && nameField) || (quantityField && !nameField) ? "Invalid" : null
 }
 
-export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: Recipe, height: number}) => {
+export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) => {
   const availableItems: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.items).map(
     (entry: [string, Item], index: number) => ({
       value: `${index}`,
@@ -259,7 +259,7 @@ export const RecipeEditControls = ({selectedRecipe, height}: {selectedRecipe?: R
       gap="lg"
       align="center"
       flex={1}
-      h={height - 40}
+      h="100%"
       style={{backgroundColor: "rgba(16, 16, 16, 0.66)"}}
     >
       <TextInput
