@@ -27,6 +27,7 @@ export const RecipesPage = () => {
         onSelect={(index: number) => {
           setSelection(database.recipes[index]);
         }}
+        label="recipe"
       />
       <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
       <RecipeEditControls selectedRecipe={selection} key={selection?.id} />

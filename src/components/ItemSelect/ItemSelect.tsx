@@ -1,14 +1,21 @@
-import { Combobox, Text, TextInput } from "@mantine/core";
+import { Button, Combobox, Text, TextInput } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 
 import classes from "./itemSelect.module.css";
+import { MdAdd } from "react-icons/md";
 
 export const ItemEntry = ({ label }: { label: string }) => {
   return <Text>{label}</Text>;
 };
 
+type ItemSelectProps = {
+  data?: ObjectEntry[];
+  onSelect: (index: number) => void;
+  label?: string
+}
+
 // TODO: rename this to 'ObjectSelect' or similar
-export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect: (index: number) => void }) => {
+export const ItemSelect = ({ data, onSelect, label }: ItemSelectProps) => {
   const [search, setSearch] = useDebouncedState<string>("", 200);
 
   const options =
@@ -40,6 +47,16 @@ export const ItemSelect = ({ data, onSelect }: { data?: ObjectEntry[]; onSelect:
         </Combobox.EventsTarget>
         <Combobox.Options>{options}</Combobox.Options>
       </Combobox>
+      <Button
+        className={classes.addButton}
+        variant="light"
+        leftSection={<MdAdd size={20} />}
+        onClick={() => {
+          onSelect(-1)
+        }}
+      >
+        Create a new {label}
+      </Button>
     </div>
   );
 };

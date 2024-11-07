@@ -26,6 +26,7 @@ export const ItemsPage = () => {
         onSelect={(index: number) => {
           setSelectedItem(database.items[index]);
         }}
+        label="item"
       />
       <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
       <EditControls selected={selectedItem} />

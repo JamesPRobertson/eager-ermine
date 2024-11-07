@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  padding: 0.5em 0em;
+  padding: 0.75em 0em;
   gap: 0.5em;
   justify-content: start;
   width: 250px;
@@ -14,4 +14,9 @@
   margin: 0px 4px;
   padding: 0.5em;
   border-bottom: solid rgba(255, 255,255, 0.08) 1px;
+}
+
+.addButton {
+  margin-top: auto;
+  align-self: center;
 }

@@ -6,15 +6,14 @@ import { useForm } from "@mantine/form";
 
 import classes from "./RecipeEditControls.module.css";
 
-
 type ValueLabelPair = {
-  value?: string,
-  label?: string,
-}
+  value?: string;
+  label?: string;
+};
 
 export interface RecipeFormValues {
   [index: string]: string | number | undefined;
-  name: string
+  name: string;
   input0Name?: number;
   input0Quantity?: number;
   input1Name?: number;
@@ -35,11 +34,11 @@ export interface RecipeFormValues {
   rate?: number;
 }
 
-const ItemSelectRow = ({data, form, rowNumber}: {data?: ValueLabelPair[], form: any, rowNumber: number}) => {
+const ItemSelectRow = ({ data, form, rowNumber }: { data?: ValueLabelPair[]; form: any; rowNumber: number }) => {
   return (
     <>
       <Grid.Col span={4}>
-        <Select 
+        <Select
           placeholder="None"
           clearable
           searchable
@@ -58,11 +57,11 @@ const ItemSelectRow = ({data, form, rowNumber}: {data?: ValueLabelPair[], form: 
           placeholder="-"
           key={form.key(`input${rowNumber}Quantity`)}
           {...form.getInputProps(`input${rowNumber}Quantity`)}
-        />           
+        />
       </Grid.Col>
       <Grid.Col span={2} />
       <Grid.Col span={4}>
-        <Select 
+        <Select
           placeholder="None"
           clearable
           searchable
@@ -81,14 +80,14 @@ const ItemSelectRow = ({data, form, rowNumber}: {data?: ValueLabelPair[], form: 
           placeholder="-"
           key={form.key(`output${rowNumber}Quantity`)}
           {...form.getInputProps(`output${rowNumber}Quantity`)}
-        />           
+        />
       </Grid.Col>
     </>
-  )
-}
+  );
+};
 
 const initialFormValues: RecipeFormValues = {
-  name: '',
+  name: "",
   input0Name: undefined,
   input0Quantity: undefined,
 
@@ -115,7 +114,7 @@ const initialFormValues: RecipeFormValues = {
 
   building: undefined,
   rate: undefined
-}
+};
 
 function mapRecipeToFormValue(recipe: Recipe): any {
   let inputs: [string?, number?][] = [];
@@ -124,8 +123,7 @@ function mapRecipeToFormValue(recipe: Recipe): any {
   for (let i = 0; i < 4; i++) {
     try {
       inputs.push([`${recipe.inputs[i].id}`, recipe.inputs[i].quantity]);
-    }
-    catch {
+    } catch {
       inputs.push([undefined, undefined]);
     }
   }
@@ -133,8 +131,7 @@ function mapRecipeToFormValue(recipe: Recipe): any {
   for (let i = 0; i < 4; i++) {
     try {
       outputs.push([`${recipe.outputs[i].id}`, recipe.outputs[i].quantity]);
-    }
-    catch {
+    } catch {
       outputs.push([undefined, undefined]);
     }
   }
@@ -167,7 +164,7 @@ function mapRecipeToFormValue(recipe: Recipe): any {
 
     building: `${recipe.building}` ?? "",
     rate: recipe.baseRate ?? undefined
-  } 
+  };
 }
 
 function convertFormValuesToRecipe(value: RecipeFormValues): Recipe {
@@ -200,26 +197,30 @@ function convertFormValuesToRecipe(value: RecipeFormValues): Recipe {
 }
 
 function validateQuantity(quantityField: number | undefined, nameField: number | undefined): string | null {
-  return (!quantityField && nameField) || (quantityField && !nameField) ? "Invalid" : null
+  return (!quantityField && nameField) || (quantityField && !nameField) ? "Invalid" : null;
 }
 
-export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) => {
-  const availableItems: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.items).map(
-    (entry: [string, Item], index: number) => ({
-      value: `${index}`,
-      label: `${entry[1].name}`,
-    })
-  ), [database.items]);
+export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe }) => {
+  const availableItems: ValueLabelPair[] = useMemo<ValueLabelPair[]>(
+    () =>
+      Object.entries(database.items).map((entry: [string, Item], index: number) => ({
+        value: `${index}`,
+        label: `${entry[1].name}`
+      })),
+    [database.items]
+  );
 
-  const availableBuildings: ValueLabelPair[] = useMemo<ValueLabelPair[]>(() => Object.entries(database.buildings).map(
-    (entry: [string, Building], index: number) => ({
-      value: `${index}`,
-      label: `${entry[1].name}`,
-    })
-  ), [database.buildings]);
+  const availableBuildings: ValueLabelPair[] = useMemo<ValueLabelPair[]>(
+    () =>
+      Object.entries(database.buildings).map((entry: [string, Building], index: number) => ({
+        value: `${index}`,
+        label: `${entry[1].name}`
+      })),
+    [database.buildings]
+  );
 
   const form = useForm<RecipeFormValues>({
-    mode: 'uncontrolled',
+    mode: "uncontrolled",
     initialValues: selectedRecipe ? mapRecipeToFormValue(selectedRecipe) : initialFormValues,
     validate: {
       name: (value) => (!value ? "Invalid name" : null),
@@ -243,8 +244,7 @@ export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) 
     if (selectedRecipe?.id === undefined) {
       convertedRecipe.id = -1;
       database.addRecipe(convertedRecipe);
-    }
-    else {
+    } else {
       convertedRecipe.id = selectedRecipe.id;
       database.updateRecipe(convertedRecipe);
     }
@@ -260,7 +260,7 @@ export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) 
       align="center"
       flex={1}
       h="100%"
-      style={{backgroundColor: "rgba(16, 16, 16, 0.66)"}}
+      style={{ backgroundColor: "rgba(16, 16, 16, 0.66)" }}
     >
       <TextInput
         classNames={{
@@ -270,92 +270,77 @@ export const RecipeEditControls = ({selectedRecipe}: {selectedRecipe?: Recipe}) 
         placeholder="Recipe Name"
         size="xl"
         miw={500}
-        key={form.key('name')}
-        {...form.getInputProps('name')}
+        key={form.key("name")}
+        {...form.getInputProps("name")}
       />
-      {
-        selectedRecipe && 
-        <Grid
-          grow
-          component="form"
-          onSubmit={form.onSubmit(handleSubmit)}
-        >
-          <Grid.Col span={5} >
-            <Text ta="center" fw={650} size="xl">Input</Text>
-          </Grid.Col>
-          <Grid.Col span={2} />
-          <Grid.Col span={5} >
-            <Text ta="center" fw={650} size="xl">Output</Text>
-          </Grid.Col>
+      <Grid grow component="form" onSubmit={form.onSubmit(handleSubmit)}>
+        <Grid.Col span={5}>
+          <Text ta="center" fw={650} size="xl">
+            Input
+          </Text>
+        </Grid.Col>
+        <Grid.Col span={2} />
+        <Grid.Col span={5}>
+          <Text ta="center" fw={650} size="xl">
+            Output
+          </Text>
+        </Grid.Col>
 
-          <ItemSelectRow data={availableItems} form={form} rowNumber={0} />
+        <ItemSelectRow data={availableItems} form={form} rowNumber={0} />
 
-          <ItemSelectRow data={availableItems} form={form} rowNumber={1} />
+        <ItemSelectRow data={availableItems} form={form} rowNumber={1} />
 
-          <ItemSelectRow data={availableItems} form={form} rowNumber={2} />
+        <ItemSelectRow data={availableItems} form={form} rowNumber={2} />
 
-          <ItemSelectRow data={availableItems} form={form} rowNumber={3} />
+        <ItemSelectRow data={availableItems} form={form} rowNumber={3} />
 
-          <Grid.Col span={12}>
-            <Divider orientation="horizontal" mx="lg" my="sm" />
-          </Grid.Col>
+        <Grid.Col span={12}>
+          <Divider orientation="horizontal" mx="lg" my="sm" />
+        </Grid.Col>
 
-          <Grid.Col span={4}>
-            <Select
-              label="Building"
-              placeholder="None"
-              searchable
-              clearable
-              data={availableBuildings}
-              key={form.key(`building`)}
-              {...form.getInputProps(`building`)}
-            />
-          </Grid.Col>
-          <Grid.Col span={2}>
-            <NumberInput
-              label="Base rate"
-              placeholder="# / minute"
-              allowDecimal={false}
-              allowLeadingZeros={false}
-              allowNegative={false}
-              hideControls
-              key={form.key(`rate`)}
-              {...form.getInputProps(`rate`)}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}></Grid.Col>
+        <Grid.Col span={4}>
+          <Select
+            label="Building"
+            placeholder="None"
+            searchable
+            clearable
+            data={availableBuildings}
+            key={form.key(`building`)}
+            {...form.getInputProps(`building`)}
+          />
+        </Grid.Col>
+        <Grid.Col span={2}>
+          <NumberInput
+            label="Base rate"
+            placeholder="# / minute"
+            allowDecimal={false}
+            allowLeadingZeros={false}
+            allowNegative={false}
+            hideControls
+            key={form.key(`rate`)}
+            {...form.getInputProps(`rate`)}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}></Grid.Col>
 
-          <Grid.Col span={12} />
+        <Grid.Col span={12} />
 
-          <Grid.Col span={9}>
-            <Button
-              variant="outline"
-              color="red"
-            >
-              Delete
+        <Grid.Col span={9}>
+          <Button variant="outline" color="red">
+            Delete
+          </Button>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <Group gap="md" justify="end">
+            <Button color="gray" disabled>
+              Discard
             </Button>
-          </Grid.Col>
-          <Grid.Col span={3}>
-            <Group
-              gap="md"
-              justify="end"
-            >
-              <Button
-                color="gray"
-                disabled
-              >
-                Discard
-              </Button>
-              <Button
-                color="rgba(0, 128, 0, 1)"
-                type="submit"
-              >
-                Save
-              </Button>
-            </Group>
-          </Grid.Col>
-        </Grid>
-      }
+            <Button color="rgba(0, 128, 0, 1)" type="submit">
+              Save
+            </Button>
+          </Group>
+        </Grid.Col>
+      </Grid>
     </Flex>
-  )
-}
+  );
+};

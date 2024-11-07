@@ -26,6 +26,7 @@ export const BuildingsPage = () => {
         onSelect={(index: number) => {
           setSelectedEntry(database.buildings[index]);
         }}
+        label="building"
       />
       <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
       <BuildingEditControls selected={selectedEntry} />
