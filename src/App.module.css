@@ -1,7 +1,7 @@
 .navbar {
   gap: 8px;
   align-items: center;
-  padding-top: 0.75em;
+  padding: 0.75em 0em;
 }
 
 .inputs {
@@ -43,4 +43,8 @@
       color: var(--mantine-color-blue-light-color);
     }
   }
+}
+
+.link:last-child {
+  margin-top: auto;
 }

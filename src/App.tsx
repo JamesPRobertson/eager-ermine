@@ -1,9 +1,9 @@
-import { AppShell, Group, rem, Text, Tooltip, UnstyledButton } from "@mantine/core";
+import { AppShell, Divider, rem, Tooltip, UnstyledButton } from "@mantine/core";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { useViewportSize } from "@mantine/hooks";
 
-import { MdHouse, MdOutlineAddBox, MdFactory, MdMenuBook, MdGridOn, MdForest } from "react-icons/md";
+import { MdHouse, MdAddBox, MdFactory, MdMenuBook, MdGridOn, MdSettings } from "react-icons/md";
 
 import classes from "./App.module.css";
 
@@ -34,18 +34,20 @@ const NavbarLink = ({ icon: Icon, label, target, active, onClick }: NavbarLinkPr
 // TODO: add a little divider between home and the rest
 const navOptions = [
   { icon: MdHouse, label: "Home", target: "/home" },
-  { icon: MdOutlineAddBox, label: "Items", target: "/items" },
+  { icon: MdAddBox, label: "Items", target: "/items" },
   { icon: MdFactory, label: "Buildings", target: "/buildings" },
   { icon: MdMenuBook, label: "Recipes", target: "/recipes" },
-  { icon: MdGridOn, label: "Planner", target: "/planner" }
+  { icon: MdGridOn, label: "Planner", target: "/planner" },
+  { icon: MdSettings, label: "Settings", target: "/settings" }
 ];
 
+// Change this up, we need some flexibility. Maybe another real component? Move these out?
 export const App = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState<string>("");
   const { height } = useViewportSize();
 
-  const links = navOptions.map((link, index) => (
-    <NavbarLink {...link} key={link.label} active={index === active} onClick={() => setActive(index)} />
+  const links = navOptions.map((entry, ) => (
+    <NavbarLink {...entry} key={entry.label} active={entry.label === active} onClick={() => setActive(entry.label)} />
   ));
 
   return (
