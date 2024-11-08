@@ -13,7 +13,8 @@ interface Item extends Object {
 type Building = {
   id: number,
   name: string,
-  powerConsumption: number
+  powerConsumption: number,
+  craftingSpeedFactor: number
 }
 
 type Input = {

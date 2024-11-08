@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text, TextInput } from "@mantine/core";
+import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text } from "@mantine/core";
 
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
-import classes from "./RecipeEditControls.module.css";
+import { ObjectNameEntry } from "components/ObjectNameEntry/ObjectNameEntry";
 
 type ValueLabelPair = {
   value?: string;
@@ -260,19 +260,9 @@ export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe
       align="center"
       flex={1}
       h="100%"
-      style={{ backgroundColor: "rgba(16, 16, 16, 0.66)" }}
+      style={{ backgroundColor: "rgba(8, 8, 8, 0.50)" }}
     >
-      <TextInput
-        classNames={{
-          input: classes.nameInput
-        }}
-        variant="unstyled"
-        placeholder="Recipe Name"
-        size="xl"
-        miw={500}
-        key={form.key("name")}
-        {...form.getInputProps("name")}
-      />
+      <ObjectNameEntry form={form} formKey="name" placeholder="Recipe Name"/>
       <Grid grow component="form" onSubmit={form.onSubmit(handleSubmit)}>
         <Grid.Col span={5}>
           <Text ta="center" fw={650} size="xl">
@@ -325,12 +315,12 @@ export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe
 
         <Grid.Col span={12} />
 
-        <Grid.Col span={9}>
+        <Grid.Col span={6}>
           <Button variant="outline" color="red">
             Delete
           </Button>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col span={6}>
           <Group gap="md" justify="end">
             <Button color="gray" disabled>
               Discard

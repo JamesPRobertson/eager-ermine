@@ -29,7 +29,7 @@ export const BuildingsPage = () => {
         label="building"
       />
       <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
-      <BuildingEditControls selected={selectedEntry} />
+      <BuildingEditControls selected={selectedEntry} key={selectedEntry?.id} />
     </Flex>
   );
 };
