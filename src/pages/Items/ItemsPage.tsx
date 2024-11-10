@@ -1,5 +1,5 @@
 import { Flex } from "@mantine/core";
-import { ItemSelect } from "components/ItemSelect/ItemSelect";
+import { ObjectSelect } from "components/ObjectSelect/ObjectSelect";
 import { EditControls } from "./components/ItemEditControls/ItemEditControls";
 
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ export const ItemsPage = () => {
 
   return (
     <Flex align="start" h="100%">
-      <ItemSelect
+      <ObjectSelect
         data={itemsListData}
         onSelect={(index: number) => {
           setSelectedItem(database.items[index]);

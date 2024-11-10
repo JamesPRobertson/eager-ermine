@@ -19,7 +19,6 @@ const navOptions = [
   { icon: MdSettings, label: "Settings", target: "/settings" }
 ];
 
-// Change this up, we need some flexibility. Maybe another real component? Move these out?
 export const App = () => {
   const [active, setActive] = useState<string>("");
   const { height } = useViewportSize();
