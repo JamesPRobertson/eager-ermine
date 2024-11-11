@@ -1,8 +1,10 @@
-import { Button, Combobox, Text, TextInput } from "@mantine/core";
+import { Button, Combobox, Text, TextInput, useCombobox } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 
 import classes from "./ObjectSelect.module.css";
 import { MdAdd } from "react-icons/md";
+
+import { useState } from "react";
 
 const ObjectEntry = ({ label }: { label: string }) => {
   return <Text>{label}</Text>;
@@ -16,13 +18,16 @@ type ObjectSelectProps = {
 
 export const ObjectSelect = ({ data, onSelect, label }: ObjectSelectProps) => {
   const [search, setSearch] = useDebouncedState<string>("", 200);
+  const [active, setActive] = useState<string | null>();
+
+  const combobox = useCombobox();
 
   const options =
     data &&
     data
       .filter((entry: ObjectEntry) => entry.label.toLowerCase().includes(search.toLowerCase().trim()))
       .map((entry: ObjectEntry) => (
-        <Combobox.Option value={`${entry.value}`} key={entry.value}>
+        <Combobox.Option value={`${entry.value}`} active={entry.value === active} key={entry.value}>
           <ObjectEntry label={entry.label} />
         </Combobox.Option>
       ));
@@ -30,13 +35,17 @@ export const ObjectSelect = ({ data, onSelect, label }: ObjectSelectProps) => {
   return (
     <div className={classes.container}>
       <Combobox
+        store={combobox}
         onOptionSubmit={(value: any) => {
           onSelect(value);
+          combobox.updateSelectedOptionIndex(value);
+          setActive(value);
         }}
+        classNames={classes}
       >
         <Combobox.EventsTarget>
           <TextInput
-            placeholder="Search"
+            placeholder={"Search" + (label && ` ${label}s`)}
             variant="unstyled"
             className={classes.searchField}
             onChange={(event) => {
@@ -51,7 +60,9 @@ export const ObjectSelect = ({ data, onSelect, label }: ObjectSelectProps) => {
         variant="light"
         leftSection={<MdAdd size={20} />}
         onClick={() => {
-          onSelect(-1)
+          onSelect(-1);
+          combobox.updateSelectedOptionIndex(undefined);
+          setActive(null);
         }}
       >
         Create a new {label}
