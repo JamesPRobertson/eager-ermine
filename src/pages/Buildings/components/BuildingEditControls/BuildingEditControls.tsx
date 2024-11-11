@@ -39,7 +39,7 @@ export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
       direction="column"
       align="center"
       flex={1}
-      style={{ backgroundColor: "rgba(16, 16, 16, 0.66)" }}
+      style={{ backgroundColor: "rgba(30, 30, 30)" }}
       h="100%"
     >
       <Flex

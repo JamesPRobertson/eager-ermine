@@ -29,7 +29,7 @@ export const RecipesPage = () => {
         }}
         label="recipe"
       />
-      <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
+      <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#333" }} />
       <RecipeEditControls selectedRecipe={selection} key={selection?.id} />
     </Flex>
   );

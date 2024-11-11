@@ -28,7 +28,7 @@ export const ItemsPage = () => {
         }}
         label="item"
       />
-      <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#444" }} />
+      <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#333" }} />
       <EditControls selected={selectedItem} />
     </Flex>
   );

@@ -260,7 +260,6 @@ export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe
       align="center"
       flex={1}
       h="100%"
-      // style={{ backgroundColor: "rgba(8, 8, 8, 0.50)" }}
       style={{ backgroundColor: "rgba(30, 30, 30)" }}
     >
       <ObjectNameEntry form={form} formKey="name" placeholder="Recipe Name"/>
