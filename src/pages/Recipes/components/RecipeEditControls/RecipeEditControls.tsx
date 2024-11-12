@@ -5,6 +5,7 @@ import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 
 import { ObjectNameEntry } from "components/ObjectNameEntry/ObjectNameEntry";
+import { FormControlButtons } from "components/FormControlButtons/FormControlButtons";
 
 type ValueLabelPair = {
   value?: string;
@@ -261,9 +262,11 @@ export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe
       flex={1}
       h="100%"
       style={{ backgroundColor: "rgba(30, 30, 30)" }}
+      component="form"
+      onSubmit={form.onSubmit(handleSubmit)}
     >
-      <ObjectNameEntry form={form} formKey="name" placeholder="Recipe Name"/>
-      <Grid grow component="form" onSubmit={form.onSubmit(handleSubmit)}>
+      <ObjectNameEntry form={form} formKey="name" placeholder="Recipe Name" />
+      <Grid grow>
         <Grid.Col span={5}>
           <Text ta="center" fw={650} size="xl">
             Input
@@ -313,24 +316,9 @@ export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe
         </Grid.Col>
         <Grid.Col span={6}></Grid.Col>
 
-        <Grid.Col span={12} style={{marginTop: "auto"}}/>
-
-        <Grid.Col span={6}>
-          <Button variant="outline" color="rgb(225, 16, 16">
-            Delete
-          </Button>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <Group gap="md" justify="end">
-            <Button color="gray" disabled>
-              Discard
-            </Button>
-            <Button color="rgba(0, 128, 0, 1)" type="submit">
-              Save
-            </Button>
-          </Group>
-        </Grid.Col>
+        <Grid.Col span={12} style={{ marginTop: "auto" }} />
       </Grid>
+      <FormControlButtons />
     </Flex>
   );
 };

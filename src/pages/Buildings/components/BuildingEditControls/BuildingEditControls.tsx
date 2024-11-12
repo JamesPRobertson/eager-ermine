@@ -3,6 +3,7 @@ import { Button, Flex, Group, NumberInput, Space } from "@mantine/core";
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
 import { ObjectNameEntry } from "components/ObjectNameEntry/ObjectNameEntry";
+import { FormControlButtons } from "components/FormControlButtons/FormControlButtons";
 
 type FormValues = {
   name: string;
@@ -33,6 +34,25 @@ export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
     }
   });
 
+  function handleSubmit(values: FormValues) {
+    if (selected !== undefined) {
+      database.updateBuilding({
+        id: selected.id,
+        name: values.name,
+        powerConsumption: values.powerConsumption ?? 0,
+        craftingSpeedFactor: values.craftingSpeedFactor ?? 1
+      });
+    } else {
+      database.addBuilding({
+        id: -1,
+        name: values.name,
+        powerConsumption: values.powerConsumption ?? 0,
+        craftingSpeedFactor: values.craftingSpeedFactor ?? 1
+      });
+    }
+    database.commitBuildings();
+  }
+
   return (
     <Flex
       p="md"
@@ -41,32 +61,10 @@ export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
       flex={1}
       style={{ backgroundColor: "rgba(30, 30, 30)" }}
       h="100%"
+      component="form"
+      onSubmit={form.onSubmit(handleSubmit)}
     >
-      <Flex
-        component="form"
-        onSubmit={form.onSubmit((values) => {
-          if (selected !== undefined) {
-            database.updateBuilding({
-              id: selected.id,
-              name: values.name,
-              powerConsumption: values.powerConsumption ?? 0,
-              craftingSpeedFactor: values.craftingSpeedFactor ?? 1
-            });
-          }
-          else {
-            database.addBuilding({
-              id: -1,
-              name: values.name,
-              powerConsumption: values.powerConsumption ?? 0,
-              craftingSpeedFactor: values.craftingSpeedFactor ?? 1
-            });
-          }
-          database.commitBuildings();
-        })}
-        direction="column"
-        gap="lg"
-        h="100%"
-      >
+      <Flex direction="column" gap="lg" h="100%">
         <ObjectNameEntry form={form} formKey="name" placeholder="Building Name" />
         <Group gap="4em">
           <NumberInput
@@ -90,18 +88,8 @@ export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
           />
         </Group>
         <Space />
-        <Group>
-          <Group flex={1}>
-            <Button variant="outline" color="rgb(225, 16, 16)">
-              Delete
-            </Button>
-          </Group>
-          <Group flex={1} justify="end">
-            <Button color="gray" disabled>Discard</Button>
-            <Button color="rgba(0, 128, 0, 1)" type="submit">Save</Button>
-          </Group>
-        </Group>
       </Flex>
+      <FormControlButtons />
     </Flex>
   );
 };
