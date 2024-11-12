@@ -13,6 +13,7 @@ import { LandingPage } from "./pages/LandingPage/LandingPage";
 import { ItemsPage } from "./pages/Items/ItemsPage";
 import { BuildingsPage } from "pages/Buildings/BuildingsPage";
 import { RecipesPage } from "pages/Recipes/RecipesPage";
+import { PlannerPage } from 'pages/Planner/PlannerPage';
 
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="items" element={<ItemsPage />}/>
             <Route path="buildings" element={<BuildingsPage />}/>
             <Route path="recipes" element={<RecipesPage />}/>
+            <Route path="planner" element={<PlannerPage />}/>
           </Route>
           <Route path="*" element={<App/>} />
         </Routes>
