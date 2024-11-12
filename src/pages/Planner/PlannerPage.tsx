@@ -1,10 +1,18 @@
-import { Flex, Title } from "@mantine/core"
-
+import { Stack, Tabs } from "@mantine/core";
 
 export const PlannerPage = () => {
   return (
-    <Flex bg="rgb(32, 32, 32)" w="100%" h="100%">
-      <Title>Hello, World!</Title>
-    </Flex>
-  )
-}
+    <Stack bg="rgb(32, 32, 32)" w="100%" h="100%" pt="sm">
+      <Tabs defaultValue="first">
+        <Tabs.List>
+          <Tabs.Tab value="first">First</Tabs.Tab>
+          <Tabs.Tab value="second">Second</Tabs.Tab>
+          <Tabs.Tab value="third">Third</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="first">First</Tabs.Panel>
+        <Tabs.Panel value="second">Second</Tabs.Panel>
+        <Tabs.Panel value="third">Third</Tabs.Panel>
+      </Tabs>
+    </Stack>
+  );
+};
