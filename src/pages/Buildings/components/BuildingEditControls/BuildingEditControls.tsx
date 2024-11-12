@@ -35,7 +35,7 @@ export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
 
   return (
     <Flex
-      p="xl"
+      p="md"
       direction="column"
       align="center"
       flex={1}
@@ -92,7 +92,7 @@ export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
         <Space />
         <Group>
           <Group flex={1}>
-            <Button variant="outline" color="rgba(255, 0, 0, 1)">
+            <Button variant="outline" color="rgb(225, 16, 16)">
               Delete
             </Button>
           </Group>

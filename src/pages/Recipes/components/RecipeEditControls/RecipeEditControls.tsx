@@ -254,7 +254,7 @@ export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe
 
   return (
     <Flex
-      p="lg"
+      p="md"
       direction="column"
       gap="lg"
       align="center"
@@ -313,10 +313,10 @@ export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe
         </Grid.Col>
         <Grid.Col span={6}></Grid.Col>
 
-        <Grid.Col span={12} />
+        <Grid.Col span={12} style={{marginTop: "auto"}}/>
 
         <Grid.Col span={6}>
-          <Button variant="outline" color="red">
+          <Button variant="outline" color="rgb(225, 16, 16">
             Delete
           </Button>
         </Grid.Col>

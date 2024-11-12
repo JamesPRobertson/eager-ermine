@@ -15,7 +15,15 @@ export const EditControls = ({ selected }: { selected?: Item }) => {
   });
 
   return (
-    <Flex p="lg" direction="column" gap="lg" align="center" flex={1} h="100%">
+    <Flex
+      p="md"
+      direction="column"
+      gap="lg"
+      align="center"
+      flex={1}
+      h="100%"
+      style={{ backgroundColor: "rgba(30, 30, 30)" }}
+    >
       <Title>{selected ? selected.name : "Select an item on the left"}</Title>
       {selected && (
         <Flex
@@ -35,8 +43,8 @@ export const EditControls = ({ selected }: { selected?: Item }) => {
             <Button variant="outline" color="rgba(255, 0, 0, 1)">
               Delete
             </Button>
-            <Button color="gray">Discard</Button>
-            <Button type="submit">Save</Button>
+            <Button color="gray" disabled>Discard</Button>
+            <Button color="rgba(0, 128, 0, 1)" type="submit">Save</Button>
           </Group>
         </Flex>
       )}
