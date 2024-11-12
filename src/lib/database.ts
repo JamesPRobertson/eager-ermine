@@ -1,6 +1,10 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
 class Database {
+  buildings: {
+    [index: number ]: Building
+  }
+
   items: {
     [index: number ]: Item
   }
@@ -9,17 +13,35 @@ class Database {
     [index: number ]: Recipe
   }
 
-  buildings: {
-    [index: number ]: Building
-  }
-
   constructor() {
+    this.buildings = {};
     this.items = {};
     this.recipes = {};
-    this.buildings = {};
+    this.buildBuildings();
     this.buildItems();
     this.buildRecipes();
-    this.buildBuildings();
+  }
+
+  addBuilding(newEntry: Building): void {
+    if (this.buildings[newEntry.id] === undefined) {
+      if (newEntry.id === -1) {
+        newEntry.id = Object.keys(this.buildings).length;
+      }
+
+      this.buildings[newEntry.id] = newEntry;
+    }
+    else {
+      throw `ID ${newEntry.id} Already exists`;
+    }
+  }
+
+  updateBuilding(entry: Building): void {
+    if (this.buildings[entry.id] !== undefined) {
+      this.buildings[entry.id] = entry;
+    }
+    else {
+      throw `ID ${entry.id} doesn't exist`;
+    }
   }
 
   addItem(newEntry: Item): void {
@@ -27,7 +49,7 @@ class Database {
       this.items[newEntry.id] = newEntry;
     }
     else {
-      console.log(`ID ${newEntry.id} Already exists`);
+      throw `ID ${newEntry.id} Already exists`;
     }
   }
 
@@ -36,7 +58,7 @@ class Database {
       this.items[entry.id] = entry;
     }
     else {
-      console.log(`ID ${entry.id} doesnt' exist`);
+      throw `ID ${entry.id} doesn't exist`;
     }
   }
 
@@ -47,10 +69,9 @@ class Database {
       }
 
       this.recipes[newEntry.id] = newEntry;
-      console.log(this.recipes);
     }
     else {
-      console.log(`ID ${newEntry.id} Already exists`);
+      throw `ID ${newEntry.id} Already exists`;
     }
   }
 
@@ -75,6 +96,23 @@ class Database {
       .then((content: any) => {
         this.items = JSON.parse(content).items;
       });
+  }
+
+  commitBuildings(): void {
+    console.log(JSON.stringify(this.buildings, null, 2));
+
+    // Test code for now :)
+    return;
+
+    invoke('write_file', {
+      path: "/Users/james/Projects/tauri/eager-ermine/dist/buildings.json",
+      data: JSON.stringify({buildings: this.buildings}, null, 2)
+    })
+      .then(
+        (response: any) => {
+          console.log(response);
+        }
+      )
   }
 
   commitItems(): void {

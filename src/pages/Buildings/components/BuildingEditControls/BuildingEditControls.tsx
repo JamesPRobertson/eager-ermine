@@ -5,13 +5,13 @@ import { useForm } from "@mantine/form";
 import { ObjectNameEntry } from "components/ObjectNameEntry/ObjectNameEntry";
 
 type FormValues = {
-  name?: string;
+  name: string;
   craftingSpeedFactor?: number;
   powerConsumption?: number;
 };
 
 const initialFormValues: FormValues = {
-  name: undefined,
+  name: "",
   craftingSpeedFactor: undefined,
   powerConsumption: undefined
 };
@@ -44,14 +44,25 @@ export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
     >
       <Flex
         component="form"
-        onSubmit={() => {
-          form.onSubmit((values) => {
-            /* TODO: write for buildings
-              database.updateItem({id: selected.id, name: values.name});
-              database.commitItems();
-              */
-          });
-        }}
+        onSubmit={form.onSubmit((values) => {
+          if (selected !== undefined) {
+            database.updateBuilding({
+              id: selected.id,
+              name: values.name,
+              powerConsumption: values.powerConsumption ?? 0,
+              craftingSpeedFactor: values.craftingSpeedFactor ?? 1
+            });
+          }
+          else {
+            database.addBuilding({
+              id: -1,
+              name: values.name,
+              powerConsumption: values.powerConsumption ?? 0,
+              craftingSpeedFactor: values.craftingSpeedFactor ?? 1
+            });
+          }
+          database.commitBuildings();
+        })}
         direction="column"
         gap="lg"
         h="100%"
