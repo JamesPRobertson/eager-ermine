@@ -17,14 +17,6 @@ const initialFormValues: FormValues = {
   powerConsumption: undefined
 };
 
-function mapBuildingToFormValues(building: Building): FormValues {
-  return {
-    name: building.name,
-    craftingSpeedFactor: building.craftingSpeedFactor,
-    powerConsumption: building.powerConsumption
-  };
-}
-
 export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
   const form = useForm<FormValues>({
     mode: "uncontrolled",
@@ -65,7 +57,7 @@ export const BuildingEditControls = ({ selected }: { selected?: Building }) => {
       onSubmit={form.onSubmit(handleSubmit)}
     >
       <Flex direction="column" gap="lg" h="100%">
-        <ObjectNameEntry form={form} formKey="name" placeholder="Building Name" />
+        <ObjectNameEntry form={form} placeholder="Building Name" />
         <Group gap="4em">
           <NumberInput
             flex={1}

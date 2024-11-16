@@ -1,6 +1,6 @@
 import { Flex } from "@mantine/core";
 import { ObjectSelect } from "components/ObjectSelect/ObjectSelect";
-import { EditControls } from "./components/ItemEditControls/ItemEditControls";
+import { ItemEditControls } from "./components/ItemEditControls/ItemEditControls";
 
 import { useEffect, useState } from "react";
 
@@ -29,7 +29,7 @@ export const ItemsPage = () => {
         label="item"
       />
       <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#333" }} />
-      <EditControls selected={selectedItem} />
+      <ItemEditControls selected={selectedItem} key={selectedItem?.id} />
     </Flex>
   );
 };

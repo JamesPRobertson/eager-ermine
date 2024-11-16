@@ -1,18 +1,40 @@
-import { Button, Flex, Group, TextInput, Title } from "@mantine/core";
-
+import { Flex } from "@mantine/core";
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
+import { ObjectNameEntry } from "components/ObjectNameEntry/ObjectNameEntry";
+import { FormControlButtons } from "components/FormControlButtons/FormControlButtons";
 
-export const EditControls = ({ selected }: { selected?: Item }) => {
-  const form = useForm({
+type FormValues = {
+  name: string;
+};
+
+const initialFormValues: FormValues = {
+  name: "",
+};
+
+export const ItemEditControls = ({ selected }: { selected?: Item }) => {
+  const form = useForm<FormValues>({
     mode: "uncontrolled",
-    initialValues: {
-      name: ""
-    },
+    initialValues: selected ?? initialFormValues,
     validate: {
       name: (value) => (value === "" ? "Name cannot be empty" : null)
     }
   });
+
+  function handleSubmit(values: FormValues) {
+    if (selected !== undefined) {
+      database.updateItem({
+        id: selected.id,
+        name: values.name,
+      });
+    } else {
+      database.addItem({
+        id: -1,
+        name: values.name,
+      });
+    }
+    database.commitItems();
+  }
 
   return (
     <Flex
@@ -23,31 +45,11 @@ export const EditControls = ({ selected }: { selected?: Item }) => {
       flex={1}
       h="100%"
       style={{ backgroundColor: "rgba(30, 30, 30)" }}
+      component="form"
+      onSubmit={form.onSubmit(handleSubmit)}
     >
-      <Title>{selected ? selected.name : "Select an item on the left"}</Title>
-      {selected && (
-        <Flex
-          component="form"
-          onSubmit={() => {
-            form.onSubmit((values) => {
-              database.updateItem({ id: selected.id, name: values.name, tags: selected.tags });
-              database.commitItems();
-            });
-          }}
-          direction="column"
-          gap="md"
-          h="100%"
-        >
-          <TextInput label="Name" placeholder={selected.name} key={form.key("name")} {...form.getInputProps("name")} />
-          <Group justify="space-between">
-            <Button variant="outline" color="rgba(255, 0, 0, 1)">
-              Delete
-            </Button>
-            <Button color="gray" disabled>Discard</Button>
-            <Button color="rgba(0, 128, 0, 1)" type="submit">Save</Button>
-          </Group>
-        </Flex>
-      )}
+      <ObjectNameEntry form={form} placeholder="Item Name" />
+      <FormControlButtons />
     </Flex>
   );
 };

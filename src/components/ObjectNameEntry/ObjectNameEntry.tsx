@@ -4,11 +4,11 @@ import classes from "./ObjectNameEntry.module.css";
 
 type ObjectNameEntryProps = {
   form: any;
-  formKey: string;
+  formKey?: string;
   placeholder?: string;
 };
 
-export const ObjectNameEntry = ({ form, formKey, placeholder }: ObjectNameEntryProps) => {
+export const ObjectNameEntry = ({ form, formKey="name", placeholder }: ObjectNameEntryProps) => {
   return (
     <TextInput
       classNames={{

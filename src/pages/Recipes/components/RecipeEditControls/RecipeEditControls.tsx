@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Button, Divider, Flex, Grid, Group, NumberInput, Select, Text } from "@mantine/core";
+import {  Divider, Flex, Grid, NumberInput, Select, Text } from "@mantine/core";
 
 import { database } from "lib/database";
 import { useForm } from "@mantine/form";
@@ -265,7 +265,7 @@ export const RecipeEditControls = ({ selectedRecipe }: { selectedRecipe?: Recipe
       component="form"
       onSubmit={form.onSubmit(handleSubmit)}
     >
-      <ObjectNameEntry form={form} formKey="name" placeholder="Recipe Name" />
+      <ObjectNameEntry form={form} placeholder="Recipe Name" />
       <Grid grow>
         <Grid.Col span={5}>
           <Text ta="center" fw={650} size="xl">
