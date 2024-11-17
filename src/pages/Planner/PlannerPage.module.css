@@ -12,4 +12,5 @@
 .panel {
   flex: 1;
   flex-grow: 16;
+  padding: 1em;
 }
