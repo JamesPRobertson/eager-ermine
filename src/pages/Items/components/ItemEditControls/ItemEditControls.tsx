@@ -9,7 +9,7 @@ type FormValues = {
 };
 
 const initialFormValues: FormValues = {
-  name: "",
+  name: ""
 };
 
 export const ItemEditControls = ({ selected }: { selected?: Item }) => {
@@ -25,12 +25,12 @@ export const ItemEditControls = ({ selected }: { selected?: Item }) => {
     if (selected !== undefined) {
       database.updateItem({
         id: selected.id,
-        name: values.name,
+        name: values.name
       });
     } else {
       database.addItem({
         id: -1,
-        name: values.name,
+        name: values.name
       });
     }
     database.commitItems();

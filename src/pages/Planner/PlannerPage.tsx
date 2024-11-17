@@ -2,7 +2,7 @@ import { Stack, Tabs } from "@mantine/core";
 
 export const PlannerPage = () => {
   return (
-    <Stack bg="rgb(32, 32, 32)" w="100%" h="100%" pt="sm">
+    <Stack bg="rgb(30, 30, 30)" w="100%" h="100%" pt="sm">
       <Tabs defaultValue="first">
         <Tabs.List>
           <Tabs.Tab value="first">First</Tabs.Tab>
