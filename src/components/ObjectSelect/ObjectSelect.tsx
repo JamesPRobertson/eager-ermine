@@ -65,7 +65,7 @@ export const ObjectSelect = ({ data, onSelect, label }: ObjectSelectProps) => {
           setActive(null);
         }}
       >
-        Create a new {label}
+        New {label}
       </Button>
     </div>
   );
