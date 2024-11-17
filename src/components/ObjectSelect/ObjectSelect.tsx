@@ -13,8 +13,8 @@ const ObjectEntry = ({ label }: { label: string }) => {
 type ObjectSelectProps = {
   data?: ObjectEntry[];
   onSelect: (index: number) => void;
-  label?: string
-}
+  label?: string;
+};
 
 export const ObjectSelect = ({ data, onSelect, label }: ObjectSelectProps) => {
   const [search, setSearch] = useDebouncedState<string>("", 200);
@@ -58,7 +58,7 @@ export const ObjectSelect = ({ data, onSelect, label }: ObjectSelectProps) => {
       <Button
         className={classes.addButton}
         variant="light"
-        leftSection={<MdAdd size={20} />}
+        leftSection={<MdAdd size="2em" />}
         onClick={() => {
           onSelect(-1);
           combobox.updateSelectedOptionIndex(undefined);

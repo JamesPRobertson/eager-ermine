@@ -3,7 +3,9 @@ import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { useViewportSize } from "@mantine/hooks";
 
-import { MdHouse, MdAddBox, MdFactory, MdMenuBook, MdGridOn, MdSettings } from "react-icons/md";
+import { MdFactory, MdSettings } from "react-icons/md";
+import { FaBookOpen, FaHome } from "react-icons/fa";
+import { LuComponent, LuLayoutGrid } from "react-icons/lu";
 
 import { NavbarLink } from "components/NavbarLink/NavbarLink";
 
@@ -11,11 +13,11 @@ import classes from "./App.module.css";
 
 // TODO: add a little divider between home and the rest
 const navOptions = [
-  { icon: MdHouse, label: "Home", target: "/home" },
-  { icon: MdAddBox, label: "Items", target: "/items" },
+  { icon: FaHome, label: "Home", target: "/home" },
+  { icon: LuComponent, label: "Items", target: "/items" },
   { icon: MdFactory, label: "Buildings", target: "/buildings" },
-  { icon: MdMenuBook, label: "Recipes", target: "/recipes" },
-  { icon: MdGridOn, label: "Planner", target: "/planner" },
+  { icon: FaBookOpen, label: "Recipes", target: "/recipes" },
+  { icon: LuLayoutGrid, label: "Planner", target: "/planner" },
   { icon: MdSettings, label: "Settings", target: "/settings" }
 ];
 

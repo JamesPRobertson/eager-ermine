@@ -1,15 +1,14 @@
-import { Group, Space, Stack, Title } from "@mantine/core";
+import { Group, Stack, Title } from "@mantine/core";
 import classes from "./LandingPage.module.css";
 import { ControlStack } from "./components/ControlStack/ControlStack";
 
 export const LandingPage = () => {
   return (
-    <Stack align="center" pt="xl" h="100%" bg="rgb(32, 32, 32)">
-      <Title className={classes.title} ta="center">
+    <Stack align="center" h="100%" bg="rgb(32, 32, 32)">
+      <Title flex={2} className={classes.title}>
         Factory Planner
       </Title>
-      <Space h="xl" />
-      <Group>
+      <Group flex={6}>
         <ControlStack label="Items" />
         <ControlStack label="Buildings" />
         <ControlStack label="Recipes" />
