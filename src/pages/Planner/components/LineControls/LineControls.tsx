@@ -10,8 +10,7 @@ type ValueLabelPair = {
   value?: string;
 };
 
-const ListEntry = ({ name, quantity }: any) => {
-  console.log(`Got ${name} `);
+const ListEntry = ({ name, quantity, rate }: any) => {
   return (
     <Group className={classes.listEntry}>
       <Text className={classes.listEntryText}>{name}</Text>
@@ -19,6 +18,14 @@ const ListEntry = ({ name, quantity }: any) => {
       <Text w={32} ta="end">
         {quantity}
       </Text>
+      {rate !== undefined && (
+        <>
+          <Divider orientation="vertical" />
+          <Text ta="end">
+            {quantity * rate} / m
+          </Text>
+        </>
+      )}
     </Group>
   );
 };
@@ -26,6 +33,7 @@ const ListEntry = ({ name, quantity }: any) => {
 type RecipePlan = {
   inputs: { name: string; quantity: number }[];
   outputs: { name: string; quantity: number }[];
+  rate?: number;
 };
 
 function createRecipePlan(selectedRecipe?: Recipe, quantity?: number): RecipePlan {
@@ -36,9 +44,6 @@ function createRecipePlan(selectedRecipe?: Recipe, quantity?: number): RecipePla
   let newRecipePlan: RecipePlan = { inputs: [], outputs: [] };
 
   selectedRecipe.inputs.map((value: Input) => {
-    console.log("This below");
-    console.log(value);
-    console.log(database.items[value.id].name);
     newRecipePlan.inputs.push({
       name: database.items[value.id].name,
       quantity: value.quantity * quantity
@@ -51,6 +56,8 @@ function createRecipePlan(selectedRecipe?: Recipe, quantity?: number): RecipePla
       quantity: value.quantity * quantity
     });
   });
+
+  newRecipePlan.rate = selectedRecipe.baseRate;
 
   console.log(newRecipePlan);
 
@@ -103,18 +110,12 @@ export const LineControls = () => {
         <Stack flex={2}>
           <Text ta="center">Inputs</Text>
           <Divider mt="-0.25em" />
-          {currentPlan.inputs &&
-            currentPlan.inputs.map((value: any) => (
-              <ListEntry {...value} key={value.id} />
-            ))}
+          {currentPlan.inputs && currentPlan.inputs.map((value: any) => <ListEntry {...value} key={value.id} rate={currentPlan.rate} />)}
         </Stack>
         <Stack flex={1}>
           <Text ta="center">Outputs</Text>
           <Divider mt="-0.25em" />
-          {currentPlan.outputs &&
-            currentPlan.outputs.map((value: any) => (
-              <ListEntry {...value} key={value.id} />
-            ))}
+          {currentPlan.outputs && currentPlan.outputs.map((value: any) => <ListEntry {...value} key={value.id} rate={currentPlan.rate} />)}
         </Stack>
       </Stack>
     </Flex>

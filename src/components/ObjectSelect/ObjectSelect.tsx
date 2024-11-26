@@ -1,4 +1,4 @@
-import { Button, Combobox, Text, TextInput, useCombobox } from "@mantine/core";
+import { Button, Combobox, ScrollArea, Text, TextInput, useCombobox } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 
 import classes from "./ObjectSelect.module.css";
@@ -53,7 +53,11 @@ export const ObjectSelect = ({ data, onSelect, label }: ObjectSelectProps) => {
             }}
           />
         </Combobox.EventsTarget>
-        <Combobox.Options>{options}</Combobox.Options>
+        <Combobox.Options>
+          <ScrollArea.Autosize type="scroll">
+            {options}
+          </ScrollArea.Autosize>
+        </Combobox.Options>
       </Combobox>
       <Button
         className={classes.addButton}
