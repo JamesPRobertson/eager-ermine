@@ -15,14 +15,15 @@ const ListEntry = ({ name, quantity, rate }: any) => {
     <Group className={classes.listEntry}>
       <Text className={classes.listEntryText}>{name}</Text>
       <Divider style={{ marginLeft: "auto" }} orientation="vertical" />
-      <Text w={32} ta="end">
+      <Text ta="end">
         {quantity}
       </Text>
       {rate !== undefined && (
         <>
           <Divider orientation="vertical" />
           <Text ta="end">
-            {quantity * rate} / m
+            {quantity * rate}
+            {/* {(quantity * rate) / 60} <-- per second! */}
           </Text>
         </>
       )}
@@ -83,7 +84,7 @@ export const LineControls = () => {
 
   return (
     <Flex w="100%" h="100%" gap="lg">
-      <Stack flex={3}>
+      <Stack flex={5}>
         <Group>
           <Select
             label="Target Recipe"

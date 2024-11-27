@@ -1,5 +1,5 @@
 import { Stack, Tabs } from "@mantine/core";
-import { LineControls } from "./components/LineControls/LineControls";
+import { LineControls } from "./components/LineControls/AlternateLineControls";
 
 import classes from "./PlannerPage.module.css";
 
