@@ -1,7 +1,8 @@
-import { Group, NumberInput, Select, Stack, Text } from "@mantine/core";
+import { Badge, Group, NumberInput, Select, Stack } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { useDebouncedState } from "@mantine/hooks";
 import { ItemTable } from "./ItemTable/ItemTable";
+import { RecipeAttributeDisplay } from "./RecipeAttributeDisplay/RecipeAttributeDisplay";
 
 import { database } from "lib/database";
 
@@ -59,7 +60,7 @@ export const LineControls = () => {
 
   return (
     <Stack w="100%" h="100%" gap="lg">
-      <Group justify="center">
+      <Group>
         <Select
           label="Target Recipe"
           placeholder="None"
@@ -69,8 +70,7 @@ export const LineControls = () => {
           onChange={(value: string | null) => {
             if (value !== null) {
               setSelectedRecipe(database.recipes[value as any]);
-            }
-            else {
+            } else {
               setSelectedRecipe(undefined);
             }
           }}
@@ -84,7 +84,10 @@ export const LineControls = () => {
           }}
         />
         {selectedRecipe && recipeQuantity && currentPlan.rate && (
-          <Text>Base rate: {currentPlan.rate ?? "unknown"} per minute</Text>
+          <RecipeAttributeDisplay
+            rate={currentPlan.rate}
+            buildingName={database.buildings[selectedRecipe.building].name}
+          />
         )}
       </Group>
       {selectedRecipe && recipeQuantity && (

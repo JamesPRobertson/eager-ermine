@@ -1,5 +1,6 @@
 import { Paper, Table } from "@mantine/core";
 
+// Can these be nested with Tree components?
 const TableEntry = ({ name, quantity, rate }: any) => {
   return (
     <Table.Tr>
@@ -10,7 +11,6 @@ const TableEntry = ({ name, quantity, rate }: any) => {
     </Table.Tr>
   );
 };
-
 
 export const ItemTable = ({ data, rate, ...props }: any) => {
   return (
