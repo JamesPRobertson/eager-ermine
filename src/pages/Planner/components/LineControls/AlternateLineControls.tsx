@@ -1,24 +1,12 @@
-import { Group, NumberInput, Select, Stack, Table, Text } from "@mantine/core";
-
-import classes from "./LineControls.module.css";
+import { Group, NumberInput, Select, Stack, Text } from "@mantine/core";
 import { useMemo, useState } from "react";
+import { ItemTable } from "./ItemTable/ItemTable";
 
 import { database } from "lib/database";
 
 type ValueLabelPair = {
   label?: string;
   value?: string;
-};
-
-const ListEntry = ({ name, quantity, rate }: any) => {
-  return (
-    <Table.Tr>
-      <Table.Td>{name}</Table.Td>
-      <Table.Td ta="end">{quantity}</Table.Td>
-      <Table.Td ta="end">{quantity * rate}</Table.Td>
-      <Table.Td ta="end">{(quantity * rate) / 60}</Table.Td>
-    </Table.Tr>
-  );
 };
 
 type RecipePlan = {
@@ -52,27 +40,6 @@ function createRecipePlan(selectedRecipe?: Recipe, quantity?: number): RecipePla
 
   return newRecipePlan;
 }
-
-const ItemTable = ({ data, rate, ...props }: any) => {
-  return (
-    <Stack {...props} className={classes.table}>
-      <Table highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Name</Table.Th>
-            <Table.Th ta="end">Quantity</Table.Th>
-            <Table.Th ta="end">Per Minute</Table.Th>
-            <Table.Th ta="end">Per Second</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {data &&
-            data.map((val: { name: string; quantity: number }) => <ListEntry key={val.name} {...val} rate={rate} />)}
-        </Table.Tbody>
-      </Table>
-    </Stack>
-  );
-};
 
 export const LineControls = () => {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe>();

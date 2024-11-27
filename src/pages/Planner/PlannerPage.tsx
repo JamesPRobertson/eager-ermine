@@ -11,6 +11,7 @@ export const PlannerPage = () => {
           <Tabs.Tab value="first">First</Tabs.Tab>
           <Tabs.Tab value="second">Second</Tabs.Tab>
           <Tabs.Tab value="third">Third</Tabs.Tab>
+          <Tabs.Tab value="fourth">Fourth</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="first">
           <LineControls />
@@ -19,6 +20,9 @@ export const PlannerPage = () => {
           <LineControls />
         </Tabs.Panel>
         <Tabs.Panel value="third">
+          <LineControls />
+        </Tabs.Panel>
+        <Tabs.Panel value="fourth">
           <LineControls />
         </Tabs.Panel>
       </Tabs>
