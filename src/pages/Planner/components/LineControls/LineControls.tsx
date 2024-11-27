@@ -1,4 +1,4 @@
-import { Badge, Group, NumberInput, Select, Stack } from "@mantine/core";
+import { Group, NumberInput, Select, Stack } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { useDebouncedState } from "@mantine/hooks";
 import { ItemTable } from "./ItemTable/ItemTable";
