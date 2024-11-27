@@ -1,12 +1,13 @@
 import { Group, NumberInput, Select, Stack, Text } from "@mantine/core";
 import { useMemo, useState } from "react";
+import { useDebouncedState } from "@mantine/hooks";
 import { ItemTable } from "./ItemTable/ItemTable";
 
 import { database } from "lib/database";
 
 type ValueLabelPair = {
-  label?: string;
-  value?: string;
+  label: string;
+  value: string;
 };
 
 type RecipePlan = {
@@ -15,7 +16,7 @@ type RecipePlan = {
   rate?: number;
 };
 
-function createRecipePlan(selectedRecipe?: Recipe, quantity?: number): RecipePlan {
+function createRecipePlan(selectedRecipe?: Recipe, quantity?: number | string): RecipePlan {
   if (!selectedRecipe || quantity === undefined) {
     return {} as RecipePlan;
   }
@@ -25,14 +26,14 @@ function createRecipePlan(selectedRecipe?: Recipe, quantity?: number): RecipePla
   selectedRecipe.inputs.map((value: Input) => {
     newRecipePlan.inputs.push({
       name: database.items[value.id].name,
-      quantity: value.quantity * quantity
+      quantity: value.quantity * (quantity as number)
     });
   });
 
   selectedRecipe.outputs.map((value: Output) => {
     newRecipePlan.outputs.push({
       name: database.items[value.id].name,
-      quantity: value.quantity * quantity
+      quantity: value.quantity * (quantity as number)
     });
   });
 
@@ -43,7 +44,7 @@ function createRecipePlan(selectedRecipe?: Recipe, quantity?: number): RecipePla
 
 export const LineControls = () => {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe>();
-  const [recipeQuantity, setRecipeQuantity] = useState<number>();
+  const [recipeQuantity, setRecipeQuantity] = useDebouncedState<number | string | undefined>(undefined, 200);
 
   const availableRecipes: ValueLabelPair[] = useMemo<ValueLabelPair[]>(
     () =>
@@ -65,17 +66,21 @@ export const LineControls = () => {
           clearable
           searchable
           data={availableRecipes}
-          onChange={(value) => {
-            setSelectedRecipe(database.recipes[value]);
+          onChange={(value: string | null) => {
+            if (value !== null) {
+              setSelectedRecipe(database.recipes[value as any]);
+            }
+            else {
+              setSelectedRecipe(undefined);
+            }
           }}
         />
         <NumberInput
           label="Quantity"
-          hideControls
           allowNegative={false}
           w="6em"
-          onChange={(value) => {
-            setRecipeQuantity(value);
+          onChange={(value: number | string | undefined) => {
+            setRecipeQuantity((prevState) => (value === "" ? prevState : value));
           }}
         />
         {selectedRecipe && recipeQuantity && currentPlan.rate && (
