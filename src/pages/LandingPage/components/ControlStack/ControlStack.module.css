@@ -1,7 +1,5 @@
 .container {
-  border-radius: 8px;
   padding: 1em 1.25em;
-  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .title {
