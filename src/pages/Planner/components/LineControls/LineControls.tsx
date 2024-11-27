@@ -1,34 +1,12 @@
-import { Divider, Flex, Group, NumberInput, Select, Stack, Text } from "@mantine/core";
-
-import classes from "./LineControls.module.css";
+import { Group, NumberInput, Select, Stack, Text } from "@mantine/core";
 import { useMemo, useState } from "react";
+import { ItemTable } from "./ItemTable/ItemTable";
 
 import { database } from "lib/database";
 
 type ValueLabelPair = {
   label?: string;
   value?: string;
-};
-
-const ListEntry = ({ name, quantity, rate }: any) => {
-  return (
-    <Group className={classes.listEntry}>
-      <Text className={classes.listEntryText}>{name}</Text>
-      <Divider style={{ marginLeft: "auto" }} orientation="vertical" />
-      <Text ta="end">
-        {quantity}
-      </Text>
-      {rate !== undefined && (
-        <>
-          <Divider orientation="vertical" />
-          <Text ta="end">
-            {quantity * rate}
-            {/* {(quantity * rate) / 60} <-- per second! */}
-          </Text>
-        </>
-      )}
-    </Group>
-  );
 };
 
 type RecipePlan = {
@@ -60,8 +38,6 @@ function createRecipePlan(selectedRecipe?: Recipe, quantity?: number): RecipePla
 
   newRecipePlan.rate = selectedRecipe.baseRate;
 
-  console.log(newRecipePlan);
-
   return newRecipePlan;
 }
 
@@ -80,45 +56,38 @@ export const LineControls = () => {
 
   const currentPlan = createRecipePlan(selectedRecipe, recipeQuantity);
 
-  console.log(currentPlan);
-
   return (
-    <Flex w="100%" h="100%" gap="lg">
-      <Stack flex={5}>
-        <Group>
-          <Select
-            label="Target Recipe"
-            placeholder="None"
-            clearable
-            searchable
-            data={availableRecipes}
-            onChange={(value) => {
-              setSelectedRecipe(database.recipes[value]);
-            }}
-          />
-          <NumberInput
-            label="Quantity"
-            hideControls
-            allowNegative={false}
-            w="6em"
-            onChange={(value) => {
-              setRecipeQuantity(value);
-            }}
-          />
-        </Group>
-      </Stack>
-      <Stack className={classes.aside}>
-        <Stack flex={2}>
-          <Text ta="center">Inputs</Text>
-          <Divider mt="-0.25em" />
-          {currentPlan.inputs && currentPlan.inputs.map((value: any) => <ListEntry {...value} key={value.id} rate={currentPlan.rate} />)}
-        </Stack>
-        <Stack flex={1}>
-          <Text ta="center">Outputs</Text>
-          <Divider mt="-0.25em" />
-          {currentPlan.outputs && currentPlan.outputs.map((value: any) => <ListEntry {...value} key={value.id} rate={currentPlan.rate} />)}
-        </Stack>
-      </Stack>
-    </Flex>
+    <Stack w="100%" h="100%" gap="lg">
+      <Group justify="center">
+        <Select
+          label="Target Recipe"
+          placeholder="None"
+          clearable
+          searchable
+          data={availableRecipes}
+          onChange={(value) => {
+            setSelectedRecipe(database.recipes[value]);
+          }}
+        />
+        <NumberInput
+          label="Quantity"
+          hideControls
+          allowNegative={false}
+          w="6em"
+          onChange={(value) => {
+            setRecipeQuantity(value);
+          }}
+        />
+        {selectedRecipe && recipeQuantity && currentPlan.rate && (
+          <Text>Base rate: {currentPlan.rate ?? "unknown"} per minute</Text>
+        )}
+      </Group>
+      {selectedRecipe && recipeQuantity && (
+        <>
+          <ItemTable flex={1} title="Inputs" data={currentPlan.inputs} rate={currentPlan.rate} />
+          <ItemTable flex={1} title="Outputs" data={currentPlan.outputs} rate={currentPlan.rate} />
+        </>
+      )}
+    </Stack>
   );
 };
