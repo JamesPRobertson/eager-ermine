@@ -13,7 +13,8 @@ interface Item extends Object {
 type Building = {
   id: number,
   name: string,
-  powerConsumption: number
+  powerConsumption: number,
+  craftingSpeedFactor: number
 }
 
 type Input = {
@@ -32,5 +33,10 @@ type Recipe = {
   inputs: Input[],
   outputs: Output[],
   building: number,
-  baseSpeed?: number
+  baseRate?: number
 }
+
+type ObjectEntry = {
+  label: string;
+  value: string;
+};

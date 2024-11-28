@@ -1,6 +1,5 @@
-import { Flex } from "@mantine/core"
-import { useViewportSize } from "@mantine/hooks";
-import { ItemEntry, ItemSelect  } from "components/ItemSelect/ItemSelect";
+import { Flex } from "@mantine/core";
+import { ObjectSelect } from "components/ObjectSelect/ObjectSelect";
 
 import { useEffect, useState } from "react";
 
@@ -8,24 +7,29 @@ import { database } from "lib/database";
 import { BuildingEditControls } from "./components/BuildingEditControls/BuildingEditControls";
 
 export const BuildingsPage = () => {
-  const { height, width } = useViewportSize();
-  const [ selectedEntry, setSelectedEntry ] = useState<Building>();
-  const [ listData, setListData ] = useState<any[]>();
+  const [selectedEntry, setSelectedEntry] = useState<Building>();
+  const [listData, setListData] = useState<ObjectEntry[]>();
 
   useEffect(() => {
-    setListData(Object.entries(database.buildings).map(
-      (entry: any, index: any) => <ItemEntry key={index} entry={entry} setter={setSelectedEntry}/>
-    ))
-  }, [listData]);
+    setListData(
+      Object.entries(database.buildings).map((entry: [string, Building]) => ({
+        label: `${entry[1].name}`,
+        value: `${entry[1].id}`
+      }))
+    );
+  }, []);
 
   return (
-    <Flex
-      align="start"
-      h={height - 40}
-    >
-      <ItemSelect height={height} data={listData} />
-      <div style={{alignSelf: "stretch", width: 1, backgroundColor: "#444"}}/>
-      <BuildingEditControls selected={selectedEntry} />
+    <Flex align="start" h="100%">
+      <ObjectSelect
+        data={listData}
+        onSelect={(index: number) => {
+          setSelectedEntry(database.buildings[index]);
+        }}
+        label="building"
+      />
+      <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#333" }} />
+      <BuildingEditControls selected={selectedEntry} key={selectedEntry?.id} />
     </Flex>
-  )
-}
+  );
+};

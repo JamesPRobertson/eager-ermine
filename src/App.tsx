@@ -1,82 +1,50 @@
-import { AppShell, Group, rem, Text, Tooltip, UnstyledButton } from "@mantine/core";
-import { Link, Outlet } from "react-router-dom";
-import { useState } from 'react';
+import { AppShell } from "@mantine/core";
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import { useViewportSize } from "@mantine/hooks";
 
-import {
-  MdHouse,
-  MdOutlineAddBox,
-  MdFactory,
-  MdMenuBook,
-  MdGridOn,
-  MdForest
-} from "react-icons/md";
+import { MdFactory, MdSettings } from "react-icons/md";
+import { FaBookOpen, FaHome } from "react-icons/fa";
+import { LuComponent, LuLayoutGrid } from "react-icons/lu";
+
+import { NavbarLink } from "components/NavbarLink/NavbarLink";
 
 import classes from "./App.module.css";
 
-interface NavbarLinkProps {
-  icon: typeof MdHouse;
-  label: string;
-  target: string;
-  active?: boolean;
-  onClick?(): void;
-}
-
-function NavbarLink({ icon: Icon, label, target, active, onClick }: NavbarLinkProps) {
-  return (
-    <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-      <UnstyledButton
-        onClick={onClick}
-        component={Link}
-        to={target}
-        className={classes.link}
-        data-active={active || undefined}
-      >
-        <Icon style={{ width: rem(32), height: rem(32) }} />
-      </UnstyledButton>
-    </Tooltip>
-  );
-}
-
+// TODO: add a little divider between home and the rest
 const navOptions = [
-  { icon: MdHouse, label: "Home", target: "/home" },
-  { icon: MdOutlineAddBox, label: "Items", target: "/items"  },
-  { icon: MdFactory, label: "Buildings", target: "/buildings"  },
-  { icon: MdMenuBook, label: "Recipes", target: "/recipes"  },
-  { icon: MdGridOn, label: "Planner", target: "/planner"  }
-]
+  { icon: FaHome, label: "Home", target: "/home" },
+  { icon: LuComponent, label: "Items", target: "/items" },
+  { icon: MdFactory, label: "Buildings", target: "/buildings" },
+  { icon: FaBookOpen, label: "Recipes", target: "/recipes" },
+  { icon: LuLayoutGrid, label: "Planner", target: "/planner" },
+  { icon: MdSettings, label: "Settings", target: "/settings" }
+];
 
 export const App = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState<string>("");
+  const { height } = useViewportSize();
 
-  const links = navOptions.map((link, index) => (
-    <NavbarLink
-      {...link}
-      key={link.label}
-      active={index === active}
-      onClick={() => setActive(index)}
-    />
+  const links = navOptions.map((entry) => (
+    <NavbarLink {...entry} key={entry.label} active={entry.label === active} onClick={() => setActive(entry.label)} />
   ));
 
-  return(
+  return (
     <div className={classes.appMain}>
       <AppShell
-        header={{height: 40}}
-        navbar={{width: 75, breakpoint: "sm", collapsed: { desktop: false} }}
-        classNames={{navbar: classes.navbar}}
+        navbar={{ width: 65, breakpoint: "sm", collapsed: { desktop: false } }}
+        classNames={{ navbar: classes.navbar }}
+        styles={{
+          main: {
+            height: height
+          }
+        }}
       >
-        <AppShell.Header>
-          <Group px="md" h="100%">
-            <MdForest style={{width: rem(25), height: rem(25), marginLeft: 8, fill: "green" }}/>
-            <Text>EE Factory Planner</Text>
-          </Group>
-        </AppShell.Header>
-        <AppShell.Navbar>
-          {links}
-        </AppShell.Navbar>
+        <AppShell.Navbar>{links}</AppShell.Navbar>
         <AppShell.Main>
           <Outlet />
         </AppShell.Main>
       </AppShell>
     </div>
-  )
-}
+  );
+};

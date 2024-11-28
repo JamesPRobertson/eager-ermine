@@ -20,10 +20,11 @@
     },
     "windows": [
       {
-        "title": "eager-ermine",
-        "width": 1200,
+        "title": "Eager Ermine Factory Planner",
+        "width": 1250,
         "height": 800,
-        "transparent": true
+        "transparent": true,
+        "url": "/home"
       }
     ],
     "macOSPrivateApi": true,

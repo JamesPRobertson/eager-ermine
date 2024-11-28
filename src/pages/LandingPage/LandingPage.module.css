@@ -1,16 +1,9 @@
-.inputs {
-  display: flex;
-  flex-direction: row;
-  column-gap: 12px;
-  padding: 24px;
-  justify-content: center;
-}
-
 .title {
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
   font-size: rem(100px);
-  font-weight: 900;
-  letter-spacing: rem(-2px);
+  font-weight: 700;
+  letter-spacing: rem(-1px);
+  align-content: center;
 
   @media (max-width: $mantine-breakpoint-md) {
     font-size: rem(50px);

@@ -1,0 +1,11 @@
+.container {
+  padding: 1em 1.25em;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  width: 150px
+}

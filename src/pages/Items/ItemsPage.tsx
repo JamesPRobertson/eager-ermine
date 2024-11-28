@@ -1,31 +1,35 @@
-import { Button, Flex } from "@mantine/core"
-import { useViewportSize } from "@mantine/hooks";
-import { ItemEntry, ItemSelect } from "components/ItemSelect/ItemSelect";
-import { EditControls } from "./components/ItemEditControls/ItemEditControls";
+import { Flex } from "@mantine/core";
+import { ObjectSelect } from "components/ObjectSelect/ObjectSelect";
+import { ItemEditControls } from "./components/ItemEditControls/ItemEditControls";
 
 import { useEffect, useState } from "react";
 
 import { database } from "lib/database";
 
 export const ItemsPage = () => {
-  const { height, width } = useViewportSize();
-  const [ selectedItem, setSelectedItem ] = useState<Item>();
-  const [ itemsListData, setItemsListData ] = useState<any[]>();
+  const [selectedItem, setSelectedItem] = useState<Item>();
+  const [itemsListData, setItemsListData] = useState<ObjectEntry[]>();
 
   useEffect(() => {
-    setItemsListData(Object.entries(database.items).map(
-      (entry: any, index: any) => <ItemEntry key={index} entry={entry} setter={setSelectedItem}/>
-    ))
-  }, [itemsListData]);
+    setItemsListData(
+      Object.entries(database.items).map((entry: [string, Item]) => ({
+        label: `${entry[1].name}`,
+        value: `${entry[1].id}`
+      }))
+    );
+  }, []);
 
   return (
-    <Flex
-      align="start"
-      h={height - 40}
-    >
-      <ItemSelect height={height} data={itemsListData} />
-      <div style={{alignSelf: "stretch", width: 1, backgroundColor: "#444"}}/>
-      <EditControls selected={selectedItem} />
+    <Flex align="start" h="100%">
+      <ObjectSelect
+        data={itemsListData}
+        onSelect={(index: number) => {
+          setSelectedItem(database.items[index]);
+        }}
+        label="item"
+      />
+      <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#333" }} />
+      <ItemEditControls selected={selectedItem} key={selectedItem?.id} />
     </Flex>
-  )
-}
+  );
+};

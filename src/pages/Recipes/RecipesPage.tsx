@@ -1,6 +1,5 @@
-import { Flex } from "@mantine/core"
-import { useViewportSize } from "@mantine/hooks";
-import { ItemEntry, ItemSelect  } from "components/ItemSelect/ItemSelect";
+import { Flex } from "@mantine/core";
+import { ObjectSelect } from "components/ObjectSelect/ObjectSelect";
 
 import { useEffect, useState } from "react";
 
@@ -8,32 +7,30 @@ import { database } from "lib/database";
 import { RecipeEditControls } from "./components/RecipeEditControls/RecipeEditControls";
 
 export const RecipesPage = () => {
-  const { height, width } = useViewportSize();
-  const [ selection, setSelection ] = useState<Recipe>();
-  const [ itemsListData, setItemsListData ] = useState<any[]>();
+  const [selection, setSelection] = useState<Recipe>();
+  const [itemsListData, setItemsListData] = useState<ObjectEntry[]>();
 
   // TODO: I think this should be moved to useMemo too.
   useEffect(() => {
-    setItemsListData(Object.entries(database.recipes).map(
-      (entry: any, index: any) => (
-        <ItemEntry
-          key={index}
-          entry={entry}
-          displayName={database.items[entry[1].outputs[0].id].name}
-          setter={setSelection}
-        />
-      )
-    ))
-  }, [itemsListData]);
+    setItemsListData(
+      Object.entries(database.recipes).map((entry: [string, Recipe]) => ({
+        label: `${entry[1].name}`,
+        value: `${entry[1].id}`
+      }))
+    );
+  }, []);
 
   return (
-    <Flex
-      align="start"
-      h={height - 40}
-    >
-      <ItemSelect height={height} data={itemsListData} />
-      <div style={{alignSelf: "stretch", width: 1, backgroundColor: "#444"}}/>
-      <RecipeEditControls height={height} selectedRecipe={selection} key={selection?.id} />
+    <Flex align="start" h="100%">
+      <ObjectSelect
+        data={itemsListData}
+        onSelect={(index: number) => {
+          setSelection(database.recipes[index]);
+        }}
+        label="recipe"
+      />
+      <div style={{ alignSelf: "stretch", width: 1, backgroundColor: "#333" }} />
+      <RecipeEditControls selectedRecipe={selection} key={selection?.id} />
     </Flex>
-  )
-}
+  );
+};
