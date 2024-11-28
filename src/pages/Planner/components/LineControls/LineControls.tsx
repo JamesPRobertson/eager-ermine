@@ -24,14 +24,14 @@ function createRecipePlan(selectedRecipe?: Recipe, quantity?: number | string): 
 
   let newRecipePlan: RecipePlan = { inputs: [], outputs: [] };
 
-  selectedRecipe.inputs.map((value: Input) => {
+  selectedRecipe.inputs.map((value: ItemQuantity) => {
     newRecipePlan.inputs.push({
       name: database.items[value.id].name,
       quantity: value.quantity * (quantity as number)
     });
   });
 
-  selectedRecipe.outputs.map((value: Output) => {
+  selectedRecipe.outputs.map((value: ItemQuantity) => {
     newRecipePlan.outputs.push({
       name: database.items[value.id].name,
       quantity: value.quantity * (quantity as number)
