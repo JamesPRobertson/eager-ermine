@@ -43,6 +43,7 @@ function createRecipePlan(selectedRecipe?: Recipe, quantity?: number | string): 
   return newRecipePlan;
 }
 
+// TODO: add crafting speed factor! || Building selection?? <- requires more work
 export const LineControls = () => {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe>();
   const [recipeQuantity, setRecipeQuantity] = useDebouncedState<number | string | undefined>(undefined, 200);
@@ -60,13 +61,14 @@ export const LineControls = () => {
 
   return (
     <Stack w="100%" h="100%" gap="lg">
-      <Group>
+      <Group grow>
         <Select
           label="Target Recipe"
           placeholder="None"
           clearable
           searchable
           data={availableRecipes}
+          maw={350}
           onChange={(value: string | null) => {
             if (value !== null) {
               setSelectedRecipe(database.recipes[value as any]);
@@ -78,7 +80,7 @@ export const LineControls = () => {
         <NumberInput
           label="Quantity"
           allowNegative={false}
-          w="6em"
+          maw="6em"
           onChange={(value: number | string | undefined) => {
             setRecipeQuantity((prevState) => (value === "" ? prevState : value));
           }}
