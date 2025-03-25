@@ -2,12 +2,12 @@
 A simple factory and logistics planner for both Factorio and Satisfactory! 
 Although recipes are limited to four inputs and outputs.
 
-**Be warned, this codebase is currently lacking unit testing of any kind**
+**Be warned, this codebase is currently lacking unit testing of any kind.**
 
 # How?
-Tauri + Vite + Mantine + TypeScript  
+**Tauri + Vite + Mantine + TypeScript**  
 <br>
-The following command runs the development version of the application  
+The following command runs the development version of the application:  
 `pnpm tauri dev`  
 
 # Screenshots
