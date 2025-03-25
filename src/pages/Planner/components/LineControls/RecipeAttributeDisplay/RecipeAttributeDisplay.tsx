@@ -12,6 +12,9 @@ export const RecipeAttributeDisplay = ({ rate, buildingName }: RecipeAttributeDi
 
   return (
     <Group gap="sm" mt="lg" style={{ cursor: "default" }}>
+      <Badge variant="light" color="blue" radius="sm">
+        {buildingName}
+      </Badge>
       <Badge
         style={{ cursor: "pointer" }}
         variant="light"
@@ -23,9 +26,6 @@ export const RecipeAttributeDisplay = ({ rate, buildingName }: RecipeAttributeDi
         }}
       >
         {calculatedRate} / {unit}
-      </Badge>
-      <Badge variant="light" color="blue" radius="sm">
-        {buildingName}
       </Badge>
     </Group>
   );

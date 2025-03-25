@@ -4,36 +4,30 @@ type ItemTag = {
   name: string
 }
 
-interface Item extends Object {
-  id: number,
-  name: string,
+interface Entity {
+  id: number;
+  name: string;
+}
+
+interface Item extends Entity {
   tags?: ItemTag[]
 }
 
-type Building = {
-  id: number,
-  name: string,
+interface Building extends Entity {
   powerConsumption: number,
   craftingSpeedFactor: number
 }
 
-type Input = {
-  id: number,
-  quantity: number
-}
-
-type Output = {
-  id: number,
-  quantity: number
-}
-
-type Recipe = {
-  id: number,
-  name: string,
-  inputs: Input[],
-  outputs: Output[],
+interface Recipe extends Entity {
+  inputs: ItemQuantity[],
+  outputs: ItemQuantity[],
   building: number,
   baseRate?: number
+}
+
+type ItemQuantity = {
+  id: number,
+  quantity: number
 }
 
 type ObjectEntry = {

@@ -23,61 +23,45 @@ class Database {
   }
 
   addBuilding(newEntry: Building): void {
-    if (this.buildings[newEntry.id] === undefined) {
-      if (newEntry.id === -1) {
-        newEntry.id = Object.keys(this.buildings).length;
-      }
-
-      this.buildings[newEntry.id] = newEntry;
-    }
-    else {
-      throw `ID ${newEntry.id} Already exists`;
-    }
+    this.addEntry(newEntry, this.buildings);
   }
 
   updateBuilding(entry: Building): void {
-    if (this.buildings[entry.id] !== undefined) {
-      this.buildings[entry.id] = entry;
-    }
-    else {
-      throw `ID ${entry.id} doesn't exist`;
-    }
+    this.updateEntry(entry, this.buildings);
   }
 
   addItem(newEntry: Item): void {
-    if (this.items[newEntry.id] === undefined) {
-      this.items[newEntry.id] = newEntry;
-    }
-    else {
-      throw `ID ${newEntry.id} Already exists`;
-    }
+    this.addEntry(newEntry, this.items);
   }
 
   updateItem(entry: Item): void {
-    if (this.items[entry.id] !== undefined) {
-      this.items[entry.id] = entry;
-    }
-    else {
-      throw `ID ${entry.id} doesn't exist`;
-    }
+    this.updateEntry(entry, this.items);
   }
 
   addRecipe(newEntry: Recipe): void {
-    if (this.recipes[newEntry.id] === undefined) {
-      if (newEntry.id === -1) {
-        newEntry.id = Object.keys(this.recipes).length;
-      }
-
-      this.recipes[newEntry.id] = newEntry;
-    }
-    else {
-      throw `ID ${newEntry.id} Already exists`;
-    }
+    this.addEntry(newEntry, this.recipes);
   }
 
   updateRecipe(entry: Recipe): void {
-    if (this.recipes[entry.id] !== undefined) {
-      this.recipes[entry.id] = entry;
+    this.updateEntry(entry, this.recipes);
+  }
+
+  addEntry(newEntry: Entity, container: {[index: number]: Entity}) {
+    if (container[newEntry.id] === undefined) {
+      if (newEntry.id === -1) {
+        newEntry.id = Object.keys(container).length;
+      }
+
+      container[newEntry.id] = newEntry;
+    }
+    else {
+      throw `ID ${newEntry.id} already exists`;
+    }
+  }
+
+  updateEntry(entry: Entity, container: {[index: number]: Entity}) {
+    if (container[entry.id] !== undefined) {
+      container[entry.id] = entry;
     }
     else {
       console.log(`ID ${entry.id} doesnt' exist`);
@@ -100,9 +84,6 @@ class Database {
 
   commitBuildings(): void {
     console.log(JSON.stringify(this.buildings, null, 2));
-
-    // Test code for now :)
-    return;
 
     invoke('write_file', {
       path: "/Users/james/Projects/tauri/eager-ermine/dist/buildings.json",
@@ -132,9 +113,6 @@ class Database {
   commitRecipes(): void {
     console.log(JSON.stringify(this.recipes, null, 2));
     console.warn("Exiting commitRecipes()!!");
-
-    // Test code for now :)
-    return;
 
     invoke('write_file', {
       path: "/Users/james/Projects/tauri/eager-ermine/dist/recipes.json",

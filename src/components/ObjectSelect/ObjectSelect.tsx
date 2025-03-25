@@ -54,9 +54,7 @@ export const ObjectSelect = ({ data, onSelect, label }: ObjectSelectProps) => {
           />
         </Combobox.EventsTarget>
         <Combobox.Options>
-          <ScrollArea.Autosize type="scroll">
-            {options}
-          </ScrollArea.Autosize>
+          {options}
         </Combobox.Options>
       </Combobox>
       <Button
